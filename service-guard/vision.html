@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Vision — Service Guard Founders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1E3A5F; --navy-dark: #152C4A; --navy-deep: #0F2038;
+    --accent: #2B6CB0; --accent-light: #4A90D9;
+    --white: #FFFFFF; --off-white: #F5F7FA;
+    --gray-100: #E8ECF1; --gray-200: #CBD2DC; --gray-400: #94A0B2;
+    --gray-500: #6B7A90; --gray-600: #4F5D73; --gray-700: #3A4A5E;
+    --gold: #C9A84C;
+    --shadow-sm: 0 2px 8px rgba(30,58,95,0.06);
+    --shadow-md: 0 8px 30px rgba(30,58,95,0.1);
+    --shadow-lg: 0 20px 60px rgba(30,58,95,0.12);
+    --radius-lg: 20px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; color:var(--gray-700); background:var(--white); line-height:1.6; }
+  h1,h2,h3,h4 { font-family:'Plus Jakarta Sans',sans-serif; color:var(--navy); line-height:1.15; text-wrap:balance; }
+
+  /* NAV */
+  .nav { background:var(--white); border-bottom:1px solid var(--gray-100); }
+  .nav.scrolled { box-shadow:var(--shadow-sm); }
+  .nav-inner { max-width:1240px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:0 32px; height:72px; }
+  .logo-img { height:52px; }
+  .nav-right { display:flex; gap:16px; align-items:center; }
+  .nav-back { font-size:0.88rem; font-weight:500; color:var(--gray-500); text-decoration:none; transition:var(--transition); }
+  .nav-back:hover { color:var(--navy); }
+  .btn-primary {
+    display:inline-flex; align-items:center; padding:11px 24px; border-radius:10px;
+    font-family:'DM Sans',sans-serif; font-weight:600; font-size:0.9rem;
+    text-decoration:none; background:var(--navy); color:var(--white);
+    box-shadow:0 4px 14px rgba(30,58,95,0.3); transition:var(--transition);
+  }
+  .btn-primary:hover { background:var(--navy-dark); transform:translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    padding:160px 32px 100px;
+    background:linear-gradient(170deg, var(--navy) 0%, var(--navy-dark) 50%, var(--navy-deep) 100%);
+    text-align:center; position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 700px 500px at 50% 40%, rgba(43,108,176,0.1), transparent);
+  }
+  .hero-label {
+    font-size:0.72rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.18em; color:var(--accent-light); margin-bottom:20px;
+    position:relative; z-index:1;
+  }
+  .hero h1 {
+    font-size:clamp(2.2rem, 4.5vw, 3.2rem); font-weight:800; color:var(--white);
+    max-width:800px; margin:0 auto 24px; letter-spacing:-0.03em;
+    position:relative; z-index:1;
+  }
+  .hero-sub {
+    font-size:1.1rem; color:rgba(255,255,255,0.5); max-width:600px;
+    margin:0 auto; line-height:1.75; position:relative; z-index:1;
+  }
+
+  /* MISSION & VISION BLOCKS */
+  .mv-section { max-width:1240px; margin:0 auto; padding:100px 32px; }
+
+  .mv-block {
+    display:grid; grid-template-columns:200px 1fr; gap:48px;
+    padding:60px 0; border-bottom:1px solid var(--gray-100);
+    align-items:start;
+  }
+  .mv-block:first-child { padding-top:0; }
+  .mv-block:last-of-type { border-bottom:none; }
+
+  .mv-label-side {
+    font-family:'Plus Jakarta Sans',sans-serif;
+    font-size:0.78rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.14em; color:var(--accent);
+    padding-top:6px;
+  }
+  .mv-content h2 {
+    font-size:clamp(1.4rem, 2.5vw, 1.8rem); font-weight:800;
+    margin-bottom:16px; letter-spacing:-0.02em;
+  }
+  .mv-content p {
+    font-size:1.05rem; color:var(--gray-600); line-height:1.8;
+    max-width:700px;
+  }
+
+  /* VALUES */
+  .values-section { background:var(--off-white); padding:100px 32px; }
+  .values-inner { max-width:1240px; margin:0 auto; }
+  .values-header {
+    margin-bottom:60px;
+  }
+  .values-label {
+    font-size:0.72rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.14em; color:var(--accent); margin-bottom:16px;
+  }
+  .values-header h2 {
+    font-size:clamp(1.6rem, 3vw, 2.2rem); font-weight:800;
+    letter-spacing:-0.02em; margin-bottom:12px;
+  }
+  .values-header p {
+    font-size:1rem; color:var(--gray-500); line-height:1.7; max-width:560px;
+  }
+
+  .values-grid {
+    display:grid; grid-template-columns:repeat(5, 1fr); gap:20px;
+  }
+  .value-card {
+    background:var(--white); border:1px solid var(--gray-100);
+    border-radius:var(--radius-lg); padding:32px 28px;
+    transition:var(--transition); position:relative; overflow:hidden;
+  }
+  .value-card::before {
+    content:''; position:absolute; top:0; left:0; right:0;
+    height:3px; background:var(--navy); opacity:0; transition:var(--transition);
+  }
+  .value-card:hover {
+    border-color:transparent; box-shadow:var(--shadow-lg); transform:translateY(-4px);
+  }
+  .value-card:hover::before { opacity:1; }
+  .value-num {
+    font-family:'Plus Jakarta Sans',sans-serif;
+    font-size:2.5rem; font-weight:800; color:var(--gray-100);
+    line-height:1; margin-bottom:16px;
+  }
+  .value-card h3 {
+    font-size:1rem; font-weight:700; margin-bottom:10px;
+  }
+  .value-card p {
+    font-size:0.85rem; color:var(--gray-500); line-height:1.65;
+  }
+
+  /* QUOTE BLOCK */
+  .quote-section {
+    padding:80px 32px;
+    background:var(--navy-deep);
+    text-align:center;
+  }
+  .quote-inner {
+    max-width:760px; margin:0 auto;
+  }
+  .quote-text {
+    font-family:'Plus Jakarta Sans',sans-serif;
+    font-size:clamp(1.2rem, 2.5vw, 1.6rem);
+    font-weight:600; color:var(--white);
+    line-height:1.6; font-style:italic;
+    margin-bottom:20px;
+  }
+  .quote-attr {
+    font-size:0.85rem; color:rgba(255,255,255,0.35);
+  }
+
+  /* FOOTER */
+  .footer {
+    padding:40px 32px; border-top:1px solid var(--gray-100);
+    display:flex; justify-content:space-between; align-items:center;
+    max-width:1240px; margin:0 auto;
+  }
+  .footer-copy { font-size:0.75rem; color:var(--gray-400); }
+  .footer-back {
+    font-size:0.82rem; color:var(--gray-400); text-decoration:none;
+    transition:var(--transition);
+  }
+  .footer-back:hover { color:var(--navy); }
+
+  /* ANIMATIONS */
+  .fade-up {
+    opacity:0; transform:translateY(24px);
+    transition:opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width:1024px) {
+    .values-grid { grid-template-columns:repeat(3, 1fr); }
+    .mv-block { grid-template-columns:1fr; gap:12px; }
+  }
+  @media (max-width:768px) {
+    .values-grid { grid-template-columns:1fr; }
+  }
+
+  /* Logo pill — keeps exact brand colors visible on dark background */
+  .logo-pill {
+    display: inline-flex; align-items: center;
+    background: transparent; padding: 6px 14px;
+    border-radius: 5px;
+  }
+  .logo-pill-footer {
+    padding: 5px 12px; border-radius: 4px;
+    opacity: 0.92;
+  }
+
+
+  /* Mobile phone (<=600px): shrink headings and allow wrapping so content fits
+     the screen instead of scrolling sideways. Desktop/tablet unaffected. */
+  @media (max-width: 600px) {
+    body { overflow-x: hidden; }
+    h1, h2, .section-title, .panel-subtitle { white-space: normal !important; overflow-wrap: break-word; }
+    img, table, pre { max-width: 100%; }
+    .hero h1, .team-hero h1, .info-panel h1, .form-header h1 { font-size: clamp(1.7rem, 8vw, 2.4rem) !important; line-height: 1.2; }
+    .section-title, .section h2, .cta h2, .cta-inner h2, .mv-content h2, .values-header h2, .content h2, .form-card h2 { font-size: clamp(1.3rem, 6vw, 1.9rem) !important; line-height: 1.25; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html"><span class="logo-pill"><img src="logo-wordmark.png" alt="Service Guard" style="filter:brightness(0) invert(1);opacity:0.88;height:36px;width:auto;display:block;"></span></a>
+    <div class="nav-right">
+      <a href="roofers.html" class="nav-back">← Back to Roofers</a>
+      <a href="contact.html" class="btn-primary">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label fade-up">Who We Are</div>
+  <h1 class="fade-up">Built by Entrepreneurs,<br>Not a Typical Insurance Company</h1>
+  <p class="hero-sub fade-up">Service Guard was founded with a clear conviction: roofing contractors deserve better tools to protect their work, grow their business, and serve their customers.</p>
+</section>
+
+<!-- MISSION & VISION -->
+<section class="mv-section">
+  <div class="mv-block fade-up">
+    <div class="mv-label-side">Mission</div>
+    <div class="mv-content">
+      <h2>Transforming Workmanship Liability Into Strategic Advantage</h2>
+      <p>To help roofing businesses enhance close rates, reduce risk, strengthen customer trust, and improve financial outcomes by transforming workmanship liability into strategic advantage.</p>
+    </div>
+  </div>
+  <div class="mv-block fade-up">
+    <div class="mv-label-side">Vision</div>
+    <div class="mv-content">
+      <h2>The Leading Risk and Warranty Platform for Roofing Businesses</h2>
+      <p>To become the leading risk and warranty platform for roofing businesses — where all roofing contractors have access to better protection, aligned incentives, and the ability to turn warranties from a cost center into a profit driver.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <div class="quote-inner fade-up">
+    <p class="quote-text">"We only win when our partners win. Our model is built on shared economics, where both parties can succeed."</p>
+    <p class="quote-attr">— Service Guard Founders</p>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values-section">
+  <div class="values-inner">
+    <div class="values-header fade-up">
+      <div class="values-label">Our Values</div>
+      <h2>What Guides Every Decision We Make</h2>
+      <p>These aren't words on a wall. They're the principles that shape how we build partnerships, manage risk, and run our business.</p>
+    </div>
+    <div class="values-grid">
+      <div class="value-card fade-up">
+        <div class="value-num">01</div>
+        <h3>Alignment</h3>
+        <p>We only win when our partners win. Our model is built on shared economics, where both parties can succeed.</p>
+      </div>
+      <div class="value-card fade-up">
+        <div class="value-num">02</div>
+        <h3>Integrity</h3>
+        <p>We do what is right, not what is easiest, even when no one is looking.</p>
+      </div>
+      <div class="value-card fade-up">
+        <div class="value-num">03</div>
+        <h3>Humility</h3>
+        <p>We approach every partnership with a learning mindset — listening first, staying grounded in data, and continuously improving how we serve our partners and manage risk.</p>
+      </div>
+      <div class="value-card fade-up">
+        <div class="value-num">04</div>
+        <h3>Trust</h3>
+        <p>We believe trust is earned through performance, alignment, and transparency. We build it by delivering on our commitments, sharing in outcomes, and operating as true long-term partners.</p>
+      </div>
+      <div class="value-card fade-up">
+        <div class="value-num">05</div>
+        <h3>Commitment to Excellence</h3>
+        <p>We believe excellence is a behavior, not an outcome. We strive to be exceptional in everything we do, never settling for the status quo and continuously improving.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <a href="roofers.html" class="footer-back">← Back to Roofers</a>
+  <div class="footer-copy">&copy; 2026 Service Guard. All rights reserved. · Nashville, TN · New York, NY</div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join the Team — Service Guard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1E3A5F; --navy-dark: #152C4A; --navy-deep: #0F2038;
+    --accent-light: #4A90D9; --white: #FFFFFF; --off-white: #F5F7FA;
+    --gray-100: #E8ECF1; --gray-200: #CBD2DC; --gray-400: #94A0B2;
+    --gray-500: #6B7A90; --gray-700: #3A4A5E;
+    --green: #2B8A3E; --red: #D03E3E;
+    --shadow-lg: 0 20px 60px rgba(30,58,95,0.12);
+    --radius-lg: 20px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'DM Sans',sans-serif; color:var(--gray-700);
+    background:var(--navy-deep); line-height:1.6;
+    min-height:100vh; display:flex; flex-direction:column;
+  }
+  h1,h2,h3 { font-family:'Plus Jakarta Sans',sans-serif; color:var(--white); line-height:1.15; text-wrap:balance; }
+
+  .nav { background:var(--white); border-bottom:1px solid var(--gray-100); }
+  .nav-inner { max-width:1240px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:0 32px; height:72px; }
+  .logo-img { height:52px; }
+  .nav-back { font-size:0.88rem; font-weight:500; color:var(--gray-500); text-decoration:none; transition:var(--transition); }
+  .nav-back:hover { color:var(--navy); }
+
+  .page-wrap {
+    flex:1; display:flex; align-items:center; justify-content:center;
+    padding:100px 32px 60px;
+  }
+  .form-container {
+    width:100%; max-width:520px;
+  }
+  .form-header {
+    text-align:center; margin-bottom:40px;
+  }
+  .form-header h1 {
+    font-size:clamp(1.6rem, 3vw, 2.2rem); font-weight:800;
+    margin-bottom:12px;
+  }
+  .form-header p {
+    font-size:0.95rem; color:rgba(255,255,255,0.45); line-height:1.7;
+  }
+
+  .form-card {
+    background:var(--white); border-radius:var(--radius-lg);
+    padding:40px 36px; box-shadow:var(--shadow-lg);
+  }
+  .form-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:18px;
+  }
+  .form-group { display:flex; flex-direction:column; }
+  .form-group.full { grid-column:1 / -1; }
+  .form-label {
+    font-size:0.8rem; font-weight:600; color:var(--navy);
+    margin-bottom:6px;
+  }
+  .form-label .req { color:var(--red); }
+  .form-input, .form-textarea {
+    font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--gray-700);
+    padding:12px 16px; border-radius:10px;
+    border:1.5px solid var(--gray-200); background:var(--white);
+    transition:var(--transition); outline:none; width:100%;
+  }
+  .form-input:focus, .form-textarea:focus {
+    border-color:var(--accent-light);
+    box-shadow:0 0 0 3px rgba(43,108,176,0.08);
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color:var(--gray-400); }
+  .form-textarea { resize:vertical; min-height:120px; }
+
+  .form-submit {
+    margin-top:24px; width:100%;
+    padding:15px 32px; border-radius:12px;
+    font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:700;
+    color:var(--white); background:var(--navy);
+    border:none; cursor:pointer;
+    box-shadow:0 4px 14px rgba(30,58,95,0.3);
+    transition:var(--transition);
+  }
+  .form-submit:hover {
+    background:var(--navy-dark);
+    box-shadow:0 6px 20px rgba(30,58,95,0.4);
+    transform:translateY(-1px);
+  }
+  .form-note {
+    margin-top:14px; font-size:0.78rem; color:var(--gray-400);
+    text-align:center;
+  }
+
+  .form-success {
+    display:none; text-align:center; padding:40px 20px;
+  }
+  .form-success.show { display:block; }
+  .form-success svg { width:56px; height:56px; stroke:var(--green); margin-bottom:20px; }
+  .form-success h3 { font-size:1.3rem; font-weight:800; color:var(--navy); margin-bottom:12px; }
+  .form-success p { font-size:0.95rem; color:var(--gray-500); line-height:1.7; }
+
+  .footer {
+    padding:24px 32px; text-align:center;
+  }
+  .footer-copy { font-size:0.72rem; color:rgba(255,255,255,0.15); }
+
+  @media (max-width:600px) {
+    .form-grid { grid-template-columns:1fr; }
+    .form-card { padding:32px 24px; }
+  }
+
+  /* Mobile phone (<=600px): shrink headings and allow wrapping so content fits
+     the screen instead of scrolling sideways. Desktop/tablet unaffected. */
+  @media (max-width: 600px) {
+    body { overflow-x: hidden; }
+    h1, h2, .section-title, .panel-subtitle { white-space: normal !important; overflow-wrap: break-word; }
+    img, table, pre { max-width: 100%; }
+    .hero h1, .team-hero h1, .info-panel h1, .form-header h1 { font-size: clamp(1.7rem, 8vw, 2.4rem) !important; line-height: 1.2; }
+    .section-title, .section h2, .cta h2, .cta-inner h2, .mv-content h2, .values-header h2, .content h2, .form-card h2 { font-size: clamp(1.3rem, 6vw, 1.9rem) !important; line-height: 1.25; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html"><img src="logo-wordmark.png" alt="Service Guard" class="logo-img" style="filter:brightness(0) invert(1);opacity:0.88;height:44px;width:auto;display:block;"></a>
+    <a href="team.html" class="nav-back">← Back to Team</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <div class="form-container">
+    <div class="form-header">
+      <h1>Join the Team</h1>
+      <p>We're building something new in the roofing warranty space. If you're interested in joining Service Guard, tell us about yourself.</p>
+    </div>
+
+    <div class="form-card">
+      <div id="formContent">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">First Name <span class="req">*</span></label>
+            <input type="text" class="form-input" placeholder="First name" id="firstName" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name <span class="req">*</span></label>
+            <input type="text" class="form-input" placeholder="Last name" id="lastName" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address <span class="req">*</span></label>
+            <input type="email" class="form-input" placeholder="you@email.com" id="email" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number <span class="req">*</span></label>
+            <input type="tel" class="form-input" placeholder="(555) 123-4567" id="phone" required>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Prior Experience <span class="req">*</span></label>
+            <textarea class="form-textarea" placeholder="Tell us about your background, relevant experience, and what interests you about Service Guard..." id="experience" required></textarea>
+          </div>
+        </div>
+        <button class="form-submit" onclick="submitForm()">Submit Application</button>
+        <p class="form-note">Your information will be sent directly to our team. We'll be in touch if there's a fit.</p>
+      </div>
+
+      <div class="form-success" id="formSuccess">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <h3>Thank You!</h3>
+        <p>We've received your information. If there's a fit, a member of our team will reach out.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer" style="display:flex;justify-content:space-between;align-items:flex-end;padding:32px 48px;border-top:1px solid rgba(0,0,0,0.08);">
+  <img src="logo-wordmark.png" alt="Service Guard" style="filter:brightness(0) invert(1);opacity:0.88;height:36px;width:auto;display:block;">
+  <div style="font-size:0.75rem;color:rgba(0,0,0,0.3);">© 2026 Service Guard. All rights reserved.</div>
+</footer>
+
+<script>
+  function submitForm() {
+    const required = ['firstName','lastName','email','phone','experience'];
+    let valid = true;
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.style.borderColor = 'var(--red)';
+        valid = false;
+      } else {
+        el.style.borderColor = 'var(--gray-200)';
+      }
+    });
+    if (!valid) return;
+
+    const data = {
+      firstName: document.getElementById('firstName').value,
+      lastName: document.getElementById('lastName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      experience: document.getElementById('experience').value,
+    };
+
+    const subject = encodeURIComponent('Join the Team — ' + data.firstName + ' ' + data.lastName);
+    const body = encodeURIComponent(
+      'Name: ' + data.firstName + ' ' + data.lastName + '\n' +
+      'Email: ' + data.email + '\n' +
+      'Phone: ' + data.phone + '\n\n' +
+      'Prior Experience:\n' + data.experience
+    );
+
+    window.location.href = 'mailto:info@a2-partners.com?subject=' + subject + '&body=' + body;
+
+    document.getElementById('formContent').style.display = 'none';
+    document.getElementById('formSuccess').classList.add('show');
+  }
+</script>
+</body>
+</html>

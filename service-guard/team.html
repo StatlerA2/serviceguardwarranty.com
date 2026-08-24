@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Team — Service Guard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1E3A5F;
+    --navy-dark: #152C4A;
+    --navy-deep: #0F2038;
+    --accent: #2B6CB0;
+    --white: #FFFFFF;
+    --off-white: #F5F7FA;
+    --gray-100: #E8ECF1;
+    --gray-200: #CBD2DC;
+    --gray-400: #94A0B2;
+    --gray-500: #6B7A90;
+    --gray-600: #4F5D73;
+    --gray-700: #3A4A5E;
+    --shadow-sm: 0 2px 8px rgba(30,58,95,0.06);
+    --shadow-md: 0 8px 30px rgba(30,58,95,0.1);
+    --shadow-lg: 0 20px 60px rgba(30,58,95,0.12);
+    --radius-lg: 20px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--gray-700);
+    background: var(--white);
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--navy);
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  /* NAV */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .nav-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 72px;
+  }
+  .logo-img { height: 52px; width: auto; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 24px; border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+    text-decoration: none; cursor: pointer; border: none;
+    transition: var(--transition);
+  }
+  .btn-primary {
+    background: var(--navy); color: var(--white);
+    box-shadow: 0 4px 14px rgba(30,58,95,0.3);
+  }
+  .btn-primary:hover {
+    background: var(--navy-dark);
+    transform: translateY(-1px);
+  }
+  .btn-back {
+    background: transparent; color: var(--gray-600);
+    font-size: 0.88rem; font-weight: 500; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: var(--transition);
+  }
+  .btn-back:hover { color: var(--navy); }
+
+  /* HERO */
+  .team-hero {
+    padding: 140px 32px 80px;
+    background: linear-gradient(170deg, var(--navy) 0%, var(--navy-dark) 50%, var(--navy-deep) 100%);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .team-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 600px 400px at 50% 40%, rgba(43,108,176,0.1), transparent);
+  }
+  .team-hero h1 {
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+    color: var(--white); margin-bottom: 16px;
+    position: relative; z-index: 1;
+  }
+  .team-hero p {
+    font-size: 1.1rem; color: rgba(255,255,255,0.55);
+    max-width: 560px; margin: 0 auto;
+    position: relative; z-index: 1; line-height: 1.7;
+  }
+
+  /* TEAM CARDS */
+  .team-section {
+    padding: 80px 32px 120px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .team-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+  }
+  .team-card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--radius-lg);
+    padding: 48px 40px;
+    text-align: center;
+    transition: var(--transition);
+  }
+  .team-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+  .team-photo {
+    width: 160px; height: 160px; border-radius: 50%;
+    object-fit: cover; object-position: center top; margin: 0 auto 28px;
+    display: block;
+    border: 4px solid var(--off-white);
+    box-shadow: var(--shadow-md);
+  }
+  .team-card h2 {
+    font-size: 1.5rem; font-weight: 800; margin-bottom: 4px;
+  }
+  .team-role {
+    font-size: 0.9rem; font-weight: 600; color: var(--accent);
+    font-style: italic; margin-bottom: 24px;
+  }
+  .team-divider {
+    width: 40px; height: 3px; border-radius: 2px;
+    background: var(--gray-200); margin: 0 auto 24px;
+  }
+  .team-bio {
+    font-size: 0.92rem; color: var(--gray-500); line-height: 1.75;
+    text-align: left;
+  }
+  .team-bio p + p { margin-top: 16px; }
+
+  /* JOIN BUTTON */
+  .join-section {
+    text-align: center; padding: 0 32px 80px;
+    max-width: 600px; margin: 0 auto;
+  }
+  .join-section p {
+    font-size: 1rem; color: var(--gray-500); margin-bottom: 24px; line-height: 1.7;
+  }
+  .btn-join {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 15px 36px; border-radius: 12px;
+    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.95rem;
+    text-decoration: none; background: var(--navy); color: var(--white);
+    box-shadow: 0 4px 14px rgba(30,58,95,0.3);
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none; cursor: pointer;
+  }
+  .btn-join:hover {
+    background: var(--navy-dark);
+    box-shadow: 0 6px 20px rgba(30,58,95,0.4);
+    transform: translateY(-1px);
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 40px 32px;
+    background: #0A1628;
+    text-align: center;
+  }
+  .footer-copy {
+    font-size: 0.78rem; color: rgba(255,255,255,0.18);
+  }
+  .footer-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.35); font-size: 0.85rem;
+    text-decoration: none; margin-bottom: 16px;
+    transition: var(--transition);
+  }
+  .footer-back:hover { color: rgba(255,255,255,0.7); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .team-grid { grid-template-columns: 1fr; gap: 32px; }
+    .team-card { padding: 36px 28px; }
+  }
+
+  /* Mobile phone (<=600px): shrink headings and allow wrapping so content fits
+     the screen instead of scrolling sideways. Desktop/tablet unaffected. */
+  @media (max-width: 600px) {
+    body { overflow-x: hidden; }
+    h1, h2, .section-title, .panel-subtitle { white-space: normal !important; overflow-wrap: break-word; }
+    img, table, pre { max-width: 100%; }
+    .hero h1, .team-hero h1, .info-panel h1, .form-header h1 { font-size: clamp(1.7rem, 8vw, 2.4rem) !important; line-height: 1.2; }
+    .section-title, .section h2, .cta h2, .cta-inner h2, .mv-content h2, .values-header h2, .content h2, .form-card h2 { font-size: clamp(1.3rem, 6vw, 1.9rem) !important; line-height: 1.25; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html">
+      <img src="logo-wordmark.png" alt="Service Guard" class="logo-img" style="filter:brightness(0) invert(1);opacity:0.88;height:44px;width:auto;display:block;">
+    </a>
+    <a href="index.html#contact" class="btn btn-primary">Let's Talk</a>
+  </div>
+</nav>
+
+<!-- HERO — HIDDEN 2026-08-24 per request (introduced the founder bios below). Restore alongside the TEAM section.
+<section class="team-hero">
+  <h1>Meet the Team</h1>
+  <p>Service Guard was founded by two investors with deep experience in home services, insurance, and small business growth.</p>
+</section>
+-->
+
+<!-- TEAM — HIDDEN 2026-08-24 per request. Founder bios (Adam/Ari) kept in code to restore later. To bring back, delete this opening comment line and the closing "-->" marker below the </section>.
+<section class="team-section">
+  <div class="team-grid">
+
+    <div class="team-card">
+      <img src="data:image/jpeg;base64,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" alt="Adam Behringer" class="team-photo">
+      <h2>Adam Behringer</h2>
+      <div class="team-role">Co-Founder</div>
+      <div class="team-divider"></div>
+      <div class="team-bio">
+        <p>Adam grew up in Indiana and now resides in Nashville, TN. He spent his childhood on a farm, around small businesses, and working in his dad's shop, learning to refinish and build furniture.</p>
+        <p>He began his career advising healthcare business owners through the sale of their companies. More recently, Adam has been an investor at Shore Capital, a leading lower middle market private equity firm, where he focused on investing in small home and B2B services businesses (residential and commercial roofing, generator repair, fiber internet, chimney repair, well drilling, smart home technology integration), software, healthcare, and more.</p>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <img src="data:image/jpeg;base64,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" alt="Ari Gerstein" class="team-photo">
+      <h2>Ari Gerstein</h2>
+      <div class="team-role">Co-Founder</div>
+      <div class="team-divider"></div>
+      <div class="team-bio">
+        <p>Ari grew up in Carmel, Indiana and now resides in New York, NY. He competed in tennis at the collegiate level and enjoys cooking and baking in his free time.</p>
+        <p>He began his career in investment banking at J.P. Morgan, advising Fortune 500 companies on capital structure and strategic finance. More recently, Ari has been an investor at a private family office called KIG and previously worked as an investor at Falcon, where he focused on home services (HVAC, Windows), consumer products, education, healthcare and B2B services.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+--><!-- END hidden TEAM section -->
+
+<!-- JOIN THE TEAM -->
+<section class="join-section">
+  <p>Interested in joining the Service Guard team? We're always looking for talented people who share our values.</p>
+  <a href="join.html" class="btn-join">Join the Team →</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" style="display:flex;justify-content:space-between;align-items:flex-end;padding:32px 48px;border-top:1px solid rgba(0,0,0,0.08);">
+  <img src="logo-wordmark.png" alt="Service Guard" style="filter:brightness(0) invert(1);opacity:0.88;height:36px;width:auto;display:block;">
+  <div style="text-align:right;">
+    <a href="index.html" style="display:block;font-size:0.82rem;color:rgba(0,0,0,0.3);text-decoration:none;margin-bottom:4px;">← Back to Home</a>
+    <div style="font-size:0.75rem;color:rgba(0,0,0,0.3);">© 2026 Service Guard. All rights reserved.</div>
+  </div>
+</footer>
+
+</body>
+</html>

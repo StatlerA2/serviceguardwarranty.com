@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File a Claim — Service Guard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1E3A5F;
+    --navy-dark: #152C4A;
+    --navy-deep: #0F2038;
+    --accent: #2B6CB0;
+    --accent-light: #63B3ED;
+    --white: #FFFFFF;
+    --off-white: #F7F8FA;
+    --gray-100: #EAEDF2;
+    --gray-200: #CBD2DC;
+    --gray-400: #94A0B2;
+    --gray-500: #6B7A90;
+    --gray-600: #4F5D73;
+    --gray-700: #3A4A5E;
+    --green: #2B8A3E;
+    --red: #C53030;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: rgba(255,255,255,0.6); background: var(--navy-deep);
+    line-height: 1.6; overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--white); line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  /* ===== NAV ===== */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(15,32,56,0.97);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 68px;
+  }
+  .nav-back {
+    font-size: 0.82rem; color: rgba(255,255,255,0.4);
+    text-decoration: none; display: flex; align-items: center; gap: 6px;
+    transition: var(--transition);
+  }
+  .nav-back:hover { color: rgba(255,255,255,0.8); }
+  .nav-back svg { width: 14px; height: 14px; }
+
+  /* ===== PAGE LAYOUT ===== */
+  .page-wrap {
+    max-width: 1200px; margin: 0 auto;
+    padding: 120px 48px 80px;
+    display: grid; grid-template-columns: 380px 1fr; gap: 64px;
+    align-items: start;
+  }
+
+  /* ===== INFO PANEL ===== */
+  .info-panel { position: sticky; top: 100px; }
+  .info-label {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--accent-light); margin-bottom: 16px;
+  }
+  .info-panel h1 {
+    font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+    font-weight: 800; letter-spacing: -0.025em; margin-bottom: 20px;
+  }
+  .info-panel > p {
+    font-size: 0.95rem; color: rgba(255,255,255,0.45); line-height: 1.8;
+    margin-bottom: 36px;
+  }
+  .info-note {
+    padding: 16px 20px;
+    background: rgba(43,108,176,0.08);
+    border: 1px solid rgba(43,108,176,0.18);
+    border-radius: 2px;
+    font-size: 0.82rem; color: rgba(255,255,255,0.4); line-height: 1.7;
+  }
+  .info-note strong { color: rgba(255,255,255,0.65); }
+  .info-steps { margin-top: 32px; display: flex; flex-direction: column; gap: 16px; }
+  .info-step {
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .info-step-num {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(43,108,176,0.15); border: 1px solid rgba(43,108,176,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.75rem; font-weight: 700; color: var(--accent-light);
+  }
+  .info-step-text { font-size: 0.85rem; color: rgba(255,255,255,0.4); line-height: 1.6; padding-top: 4px; }
+  .info-step-text strong { color: rgba(255,255,255,0.65); display: block; margin-bottom: 2px; }
+
+  /* ===== FORM CARD ===== */
+  .form-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 52px 48px;
+  }
+  .form-card h2 {
+    font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .form-sub {
+    font-size: 0.9rem; color: rgba(255,255,255,0.4); margin-bottom: 40px;
+    line-height: 1.6;
+  }
+  .form-section-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.15em; color: rgba(255,255,255,0.3);
+    margin-bottom: 20px; margin-top: 36px; padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .form-section-title:first-of-type { margin-top: 0; }
+  .form-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label {
+    font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.55);
+    letter-spacing: 0.01em;
+  }
+  .req { color: var(--accent-light); }
+  .form-input, .form-select, .form-textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white); font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; padding: 11px 14px;
+    transition: var(--transition); outline: none;
+    border-radius: 2px; width: 100%;
+  }
+  .form-input::placeholder, .form-textarea::placeholder {
+    color: rgba(255,255,255,0.2);
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--accent); background: rgba(43,108,176,0.06);
+  }
+  .form-select { cursor: pointer; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+    background-size: 16px; padding-right: 36px;
+  }
+  .form-select option { background: #1a2d47; color: var(--white); }
+  .form-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+  .radio-group { display: flex; gap: 24px; }
+  .radio-label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.88rem; color: rgba(255,255,255,0.5); cursor: pointer;
+  }
+  .radio-label input[type="radio"] { accent-color: var(--accent); cursor: pointer; }
+
+  /* Upload area */
+  .upload-area {
+    border: 2px dashed rgba(255,255,255,0.1);
+    padding: 28px; text-align: center;
+    cursor: pointer; transition: var(--transition);
+    background: rgba(255,255,255,0.02);
+    border-radius: 2px;
+  }
+  .upload-area:hover { border-color: rgba(43,108,176,0.4); background: rgba(43,108,176,0.04); }
+  .upload-area svg { width: 28px; height: 28px; stroke: rgba(255,255,255,0.2); margin-bottom: 10px; }
+  .upload-area p { font-size: 0.85rem; color: rgba(255,255,255,0.3); margin: 0; }
+  .upload-area p strong { color: rgba(255,255,255,0.5); }
+
+  /* Checkbox */
+  .checkbox-group {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 20px; background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .checkbox-group input[type="checkbox"] {
+    accent-color: var(--accent); flex-shrink: 0;
+    width: 16px; height: 16px; margin-top: 2px; cursor: pointer;
+  }
+  .checkbox-group label {
+    font-size: 0.84rem; color: rgba(255,255,255,0.45); line-height: 1.65;
+    cursor: pointer;
+  }
+
+  /* Submit button */
+  .form-submit {
+    margin-top: 24px; width: 100%;
+    background: var(--accent); color: var(--white);
+    border: none; cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    padding: 16px 32px; letter-spacing: 0.01em;
+    transition: var(--transition); text-align: center;
+  }
+  .form-submit:hover { background: #1a5a9e; }
+  .form-note {
+    margin-top: 12px; font-size: 0.78rem;
+    color: rgba(255,255,255,0.25); text-align: center; line-height: 1.6;
+  }
+
+  /* Weather toggle */
+  .weather-detail { display: none; }
+  .weather-detail.visible { display: block; }
+
+  /* Success state */
+  .form-success {
+    display: none; text-align: center; padding: 48px 24px;
+  }
+  .form-success.visible { display: block; }
+  .form-success svg {
+    width: 56px; height: 56px; stroke: #48BB78; margin-bottom: 20px;
+  }
+  .form-success h3 { font-size: 1.4rem; margin-bottom: 12px; }
+  .form-success p { font-size: 0.92rem; color: rgba(255,255,255,0.45); line-height: 1.7; }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    padding: 48px; border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex; justify-content: space-between; align-items: flex-end;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .footer-left { }
+  .footer-loc { font-size: 0.82rem; color: rgba(255,255,255,0.25); margin-top: 12px; }
+  .footer-right { text-align: right; }
+  .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.15); }
+  .footer-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.3); font-size: 0.82rem;
+    text-decoration: none; margin-bottom: 8px;
+    transition: var(--transition);
+  }
+  .footer-back:hover { color: rgba(255,255,255,0.7); }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 900px) {
+    .page-wrap { grid-template-columns: 1fr; gap: 40px; padding: 100px 24px 60px; }
+    .info-panel { position: static; }
+    .form-card { padding: 32px 24px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .nav-inner { padding: 0 24px; }
+    .footer { padding: 32px 24px; flex-direction: column; align-items: flex-start; gap: 20px; }
+    .footer-right { text-align: left; }
+  }
+
+  /* Logo pill — keeps exact brand colors visible on dark background */
+  .logo-pill {
+    display: inline-flex; align-items: center;
+    background: transparent; padding: 6px 14px;
+    border-radius: 5px;
+  }
+  .logo-pill-footer {
+    padding: 5px 12px; border-radius: 4px;
+    opacity: 0.92;
+  }
+
+
+  /* Mobile phone (<=600px): shrink headings and allow wrapping so content fits
+     the screen instead of scrolling sideways. Desktop/tablet unaffected. */
+  @media (max-width: 600px) {
+    body { overflow-x: hidden; }
+    h1, h2, .section-title, .panel-subtitle { white-space: normal !important; overflow-wrap: break-word; }
+    img, table, pre { max-width: 100%; }
+    .hero h1, .team-hero h1, .info-panel h1, .form-header h1 { font-size: clamp(1.7rem, 8vw, 2.4rem) !important; line-height: 1.2; }
+    .section-title, .section h2, .cta h2, .cta-inner h2, .mv-content h2, .values-header h2, .content h2, .form-card h2 { font-size: clamp(1.3rem, 6vw, 1.9rem) !important; line-height: 1.25; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="homeowners.html">
+      <span class="logo-pill"><img src="logo-wordmark.png" alt="Service Guard" style="filter:brightness(0) invert(1);opacity:0.88;height:36px;width:auto;display:block;"></span>
+    </a>
+    <a href="homeowners.html" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="19 12 5 12"/><polyline points="12 5 5 12 12 19"/></svg>
+      Back to Homeowners
+    </a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- LEFT: INFO -->
+  <div class="info-panel">
+    <div class="info-label">Claims</div>
+    <h1>File a Claim</h1>
+    <p>If your roof has a workmanship-related issue, submit a claim here. Fill out the form completely — the more detail you provide, the faster we can review your claim.</p>
+
+    <div class="info-note">
+      <strong>Important:</strong> Submitting this form does not guarantee coverage. Final eligibility is determined based on your warranty terms, the nature of the issue, and the results of our review process.
+    </div>
+
+    <div class="info-steps">
+      <div class="info-step">
+        <div class="info-step-num">1</div>
+        <div class="info-step-text"><strong>Submit this form</strong>Tell us your property address, your contractor, and what's wrong.</div>
+      </div>
+      <div class="info-step">
+        <div class="info-step-num">2</div>
+        <div class="info-step-text"><strong>Initial review</strong>Service Guard reviews your claim details within a few business days.</div>
+      </div>
+      <div class="info-step">
+        <div class="info-step-num">3</div>
+        <div class="info-step-text"><strong>We'll follow up</strong>A team member will contact you with next steps, including whether an inspection is needed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: FORM -->
+  <div class="form-card">
+    <div id="formContent">
+      <h2>Submit Your Claim</h2>
+      <p class="form-sub">All fields marked with <span style="color:var(--accent-light);">*</span> are required.</p>
+
+      <!-- Honeypot: hidden from people, bots tend to fill it. Leave empty. -->
+      <input type="text" id="company_website" name="company_website" tabindex="-1"
+             autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;">
+
+
+      <!-- SECTION: Your Information -->
+      <div class="form-section-title">Your Information</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Full Name <span class="req">*</span></label>
+          <input type="text" class="form-input" placeholder="Jane Smith" id="fullName" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address <span class="req">*</span></label>
+          <input type="email" class="form-input" placeholder="you@email.com" id="email" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number <span class="req">*</span></label>
+          <input type="tel" class="form-input" placeholder="(555) 123-4567" id="phone" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Preferred Contact Method <span class="req">*</span></label>
+          <select class="form-select" id="contactMethod" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="email">Email</option>
+            <option value="phone">Phone call</option>
+            <option value="text">Text message</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Property Address <span class="req">*</span></label>
+          <input type="text" class="form-input" placeholder="123 Main St, Nashville, TN 37201" id="address" required>
+        </div>
+      </div>
+
+      <!-- SECTION: Warranty & Contractor -->
+      <div class="form-section-title">Warranty & Contractor Details</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Installing Contractor Name <span class="req">*</span></label>
+          <input type="text" class="form-input" placeholder="Contractor company name" id="contractorName" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date of Roof Installation <span class="req">*</span></label>
+          <input type="date" class="form-input" id="installDate" required>
+        </div>
+      </div>
+
+      <!-- SECTION: The Issue -->
+      <div class="form-section-title">About the Issue</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Type of Roof Issue <span class="req">*</span></label>
+          <select class="form-select" id="issueType" required>
+            <option value="" disabled selected>Select the issue type</option>
+            <option value="leak">Leak</option>
+            <option value="shingles">Missing or loose shingles</option>
+            <option value="flashing">Flashing issue</option>
+            <option value="vent">Vent or penetration issue</option>
+            <option value="drainage">Drainage issue</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">When Was the Issue First Noticed? <span class="req">*</span></label>
+          <input type="date" class="form-input" id="noticeDate" required>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Was There Recent Severe Weather? <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="severeWeather" value="yes" onchange="toggleWeather(true)"> Yes
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="severeWeather" value="no" onchange="toggleWeather(false)"> No
+            </label>
+          </div>
+        </div>
+        <div class="form-group full weather-detail" id="weatherDetail">
+          <label class="form-label">Describe the Weather Event</label>
+          <input type="text" class="form-input" id="weatherDesc" placeholder="e.g. Hailstorm on May 15, high winds from a severe thunderstorm">
+          <p style="font-size:0.78rem;color:rgba(255,255,255,0.25);margin-top:6px;line-height:1.6;">
+            Note: Service Guard workmanship warranties do not cover weather-related damage. This information helps us determine whether the issue may be workmanship-related or weather-related.
+          </p>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Describe the Issue <span class="req">*</span></label>
+          <textarea class="form-textarea" id="issueDesc" placeholder="Describe what you're seeing, where on the roof it's located, and any other relevant details..." style="min-height:120px;" required></textarea>
+        </div>
+      </div>
+
+      <!-- SECTION: Photos -->
+      <div class="form-section-title">Photos</div>
+      <div class="form-group full">
+        <div class="info-note">
+          Photos help us review your claim. If you have any, email them to
+          <strong>claims@serviceguardwarranty.com</strong> with your name and property address
+          after you submit this form. Photos are not uploaded on this page.
+        </div>
+      </div>
+
+      <!-- SECTION: Acknowledgment -->
+      <div class="form-section-title">Acknowledgment</div>
+      <div class="form-group full">
+        <div class="checkbox-group">
+          <input type="checkbox" id="acknowledgment" required>
+          <label for="acknowledgment">
+            I understand that submitting this claim does not guarantee coverage, and that final eligibility depends on the warranty terms, the nature of the issue, and Service Guard's review process.
+          </label>
+        </div>
+      </div>
+
+      <!-- SUBMIT -->
+      <!-- submitClaim() POSTs the claim to the Service Guard Operations Console
+           (CLAIMS_ENDPOINT), which records it in the database and matches it to a
+           policy by property address. Set CLAIMS_ENDPOINT to the ops console URL. -->
+      <button class="form-submit" onclick="submitClaim()">Submit Claim</button>
+      <p class="form-note">Your information is kept confidential and used only to process your claim.</p>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="form-success" id="formSuccess">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      <h3>Claim Received</h3>
+      <p>Thanks. Your claim has been submitted to the Service Guard team. A team member will review it and follow up within 2–3 business days.</p>
+      <p style="margin-top:16px;">If you have photos that support your claim, email them to <a href="mailto:claims@serviceguardwarranty.com" style="color:var(--accent-light);">claims@serviceguardwarranty.com</a> with your name and property address.</p>
+      <a href="homeowners.html" style="display:inline-block;margin-top:32px;color:rgba(255,255,255,0.45);font-size:0.85rem;text-decoration:none;">← Back to Homeowners</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-left">
+    <span class="logo-pill logo-pill-footer"><img src="logo-wordmark.png" alt="Service Guard" style="filter:brightness(0) invert(1);opacity:0.88;height:30px;width:auto;display:block;"></span>
+    <div class="footer-loc">Nashville, TN &nbsp;·&nbsp; New York, NY</div>
+  </div>
+  <div class="footer-right">
+    <a href="homeowners.html" class="footer-back">← Back to Homeowners</a>
+    <div class="footer-copy">© 2026 Service Guard. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  // Set this to the Service Guard Operations Console URL once it is deployed.
+  const CLAIMS_ENDPOINT = "https://sg-roof-importer.onrender.com/api/claims";
+
+  function toggleWeather(show) {
+    document.getElementById('weatherDetail').classList.toggle('visible', show);
+  }
+
+  async function submitClaim() {
+    const required = ['fullName', 'email', 'phone', 'contactMethod', 'address',
+                      'contractorName', 'installDate', 'issueType', 'noticeDate', 'issueDesc'];
+    let valid = true;
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el || !el.value.trim()) {
+        if (el) el.style.borderColor = 'rgba(197,48,48,0.6)';
+        valid = false;
+      } else {
+        el.style.borderColor = '';
+      }
+    });
+
+    const weather = document.querySelector('input[name="severeWeather"]:checked');
+    if (!weather) valid = false;
+
+    const ack = document.getElementById('acknowledgment');
+    if (!ack.checked) { ack.style.outline = '2px solid rgba(197,48,48,0.6)'; valid = false; }
+    else { ack.style.outline = ''; }
+
+    if (!valid) {
+      const firstError = document.querySelector('.form-input[style*="border-color"]');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const val = id => document.getElementById(id).value.trim();
+    const payload = {
+      claimant_name: val('fullName'),
+      claimant_email: val('email'),
+      claimant_phone: val('phone'),
+      contact_method: val('contactMethod'),
+      property_address: val('address'),
+      contractor_name: val('contractorName'),
+      install_date: val('installDate'),
+      issue_type: val('issueType'),
+      notice_date: val('noticeDate'),
+      severe_weather: weather ? weather.value : '',
+      weather_desc: val('weatherDesc'),
+      description: val('issueDesc'),
+      company_website: document.getElementById('company_website').value  // honeypot
+    };
+
+    const btn = document.querySelector('.form-submit');
+    btn.disabled = true; btn.textContent = 'Submitting…';
+    try {
+      const res = await fetch(CLAIMS_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || ('Error ' + res.status));
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      btn.disabled = false; btn.textContent = 'Submit Claim';
+      alert('Sorry, your claim could not be submitted (' + err.message + ').\n'
+            + 'Please try again, or email claims@serviceguardwarranty.com directly.');
+    }
+  }
+</script>
+</body>
+</html>

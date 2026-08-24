@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get in Touch — Service Guard</title>
+<!-- HubSpot tracking — sets the hubspotutk cookie read by submitForm() -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//a2investmentpartners.sharepoint.com///js-na2.hs-scripts.com/246469729.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1E3A5F;
+    --navy-dark: #152C4A;
+    --navy-deep: #0F2038;
+    --accent: #2B6CB0;
+    --accent-light: #4A90D9;
+    --white: #FFFFFF;
+    --off-white: #F5F7FA;
+    --gray-100: #E8ECF1;
+    --gray-200: #CBD2DC;
+    --gray-400: #94A0B2;
+    --gray-500: #6B7A90;
+    --gray-600: #4F5D73;
+    --gray-700: #3A4A5E;
+    --green: #2B8A3E;
+    --red: #D03E3E;
+    --shadow-sm: 0 2px 8px rgba(30,58,95,0.06);
+    --shadow-md: 0 8px 30px rgba(30,58,95,0.1);
+    --shadow-lg: 0 20px 60px rgba(30,58,95,0.12);
+    --radius: 12px;
+    --radius-lg: 20px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--gray-700); background: var(--navy-deep);
+    line-height: 1.6; min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--white); line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  /* NAV */
+  .nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .nav-inner {
+    max-width: 1240px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 72px;
+  }
+  .logo-img { height: 52px; width: auto; }
+  .nav-back {
+    font-size: 0.88rem; font-weight: 500; color: var(--gray-500);
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    transition: var(--transition);
+  }
+  .nav-back:hover { color: var(--navy); }
+
+  /* LAYOUT */
+  .page-wrap {
+    flex: 1; display: grid; grid-template-columns: 1fr 1fr;
+    max-width: 1240px; margin: 0 auto; width: 100%;
+    padding: 60px 32px 80px; gap: 80px; align-items: start;
+  }
+
+  /* LEFT — INFO PANEL */
+  .info-panel { padding-top: 20px; }
+  .info-label {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.16em; color: var(--accent-light); margin-bottom: 16px;
+  }
+  .info-panel h1 {
+    font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 800;
+    letter-spacing: -0.02em; margin-bottom: 20px;
+  }
+  .info-panel > p {
+    font-size: 1rem; color: rgba(255,255,255,0.5); line-height: 1.75;
+    margin-bottom: 40px; max-width: 440px;
+  }
+  .info-features { display: flex; flex-direction: column; gap: 24px; }
+  .info-feat {
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .info-feat-icon {
+    width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    display: grid; place-items: center;
+    box-shadow: none;
+  }
+  .info-feat-icon svg { width: 18px; height: 18px; stroke: var(--accent-light); }
+  .info-feat h4 {
+    font-size: 0.92rem; font-weight: 700; margin-bottom: 2px; color: var(--white);
+  }
+  .info-feat p {
+    font-size: 0.85rem; color: rgba(255,255,255,0.4); line-height: 1.55;
+  }
+
+  .info-contact-row {
+    margin-top: 48px; padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; gap: 32px;
+  }
+  .info-contact-item {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .info-contact-item svg { width: 16px; height: 16px; stroke: rgba(255,255,255,0.35); }
+  .info-contact-item span { font-size: 0.88rem; color: var(--gray-600); font-weight: 500; }
+  .info-contact-item a {
+    font-size: 0.88rem; color: var(--accent-light); font-weight: 600;
+    text-decoration: none;
+  }
+  .info-contact-item a:hover { color: var(--white); }
+
+  /* RIGHT — FORM */
+  .form-card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--radius-lg);
+    padding: 44px 40px;
+    box-shadow: var(--shadow-lg);
+  }
+  .form-card h2 {
+    font-size: 1.25rem; font-weight: 700; margin-bottom: 6px;
+    color: var(--navy);
+  }
+  .form-card .form-sub {
+    font-size: 0.88rem; color: var(--gray-500); margin-bottom: 32px;
+  }
+
+  .form-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  }
+  .form-group { display: flex; flex-direction: column; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label {
+    font-size: 0.8rem; font-weight: 600; color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .form-label .req { color: var(--red); }
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; color: var(--gray-700);
+    padding: 12px 16px; border-radius: 10px;
+    border: 1.5px solid var(--gray-200);
+    background: var(--white);
+    transition: var(--transition);
+    outline: none;
+    width: 100%;
+  }
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(43,108,176,0.08);
+  }
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: var(--gray-400);
+  }
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2394A0B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+  .form-textarea {
+    resize: vertical; min-height: 100px;
+  }
+
+  .form-submit {
+    margin-top: 28px; width: 100%;
+    padding: 15px 32px; border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--white); background: var(--navy);
+    border: none; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(30,58,95,0.3);
+    transition: var(--transition);
+  }
+  .form-submit:hover {
+    background: var(--navy-dark);
+    box-shadow: 0 6px 20px rgba(30,58,95,0.4);
+    transform: translateY(-1px);
+  }
+
+  .form-note {
+    margin-top: 16px; font-size: 0.78rem; color: var(--gray-400);
+    text-align: center; line-height: 1.5;
+  }
+
+  /* SUCCESS STATE */
+  .form-success {
+    display: none; text-align: center; padding: 40px 20px;
+  }
+  .form-success.show { display: block; }
+  .form-success svg { width: 56px; height: 56px; stroke: var(--green); margin-bottom: 20px; }
+  .form-success h3 {
+    font-size: 1.3rem; font-weight: 800; margin-bottom: 12px;
+    color: var(--navy);
+  }
+  .form-success p {
+    font-size: 0.95rem; color: var(--gray-500); line-height: 1.7;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 28px 32px; background: var(--white);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    text-align: center;
+  }
+  .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.2); }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .page-wrap { grid-template-columns: 1fr; gap: 48px; }
+  }
+  @media (max-width: 768px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-card { padding: 32px 24px; }
+    .info-contact-row { flex-direction: column; gap: 16px; }
+  }
+
+  /* Mobile phone (<=600px): shrink headings and allow wrapping so content fits
+     the screen instead of scrolling sideways. Desktop/tablet unaffected. */
+  @media (max-width: 600px) {
+    body { overflow-x: hidden; }
+    h1, h2, .section-title, .panel-subtitle { white-space: normal !important; overflow-wrap: break-word; }
+    img, table, pre { max-width: 100%; }
+    .hero h1, .team-hero h1, .info-panel h1, .form-header h1 { font-size: clamp(1.7rem, 8vw, 2.4rem) !important; line-height: 1.2; }
+    .section-title, .section h2, .cta h2, .cta-inner h2, .mv-content h2, .values-header h2, .content h2, .form-card h2 { font-size: clamp(1.3rem, 6vw, 1.9rem) !important; line-height: 1.25; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html"><img src="logo-wordmark.png" alt="Service Guard" class="logo-img" style="filter:brightness(0) invert(1);opacity:0.88;height:44px;width:auto;display:block;"></a>
+    <a href="roofers.html" class="nav-back">
+      ← Back to Roofers
+    </a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- LEFT: INFO -->
+  <div class="info-panel">
+    <div class="info-label">Get in Touch</div>
+    <h1>Get Started with Service Guard</h1>
+    <p>Fill out the form and a member of our team will reach out to schedule an introductory meeting. We'll walk you through our warranty programs and answer any questions.</p>
+
+    <div class="info-features">
+      <div class="info-feat">
+        <div class="info-feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <h4>Quick Response</h4>
+          <p>We typically respond within one business day</p>
+        </div>
+      </div>
+      <div class="info-feat">
+        <div class="info-feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div>
+          <h4>No Obligation</h4>
+          <p>Learn about our programs with zero pressure</p>
+        </div>
+      </div>
+      <div class="info-feat">
+        <div class="info-feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+          <h4>Talk to a Real Person</h4>
+          <p>No call centers — you'll work directly with our team</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-contact-row">
+      <div class="info-contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <a href="mailto:info@serviceguardwarranty.com">info@serviceguardwarranty.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: FORM -->
+  <div class="form-card">
+    <div id="formContent">
+      <h2>Become a Partner</h2>
+      <p class="form-sub">Turn your warranty from a cost center into income — commission at sale, profit share if claims stay low, and claims paid by insurance instead of your cash flow. Tell us about your business and we'll walk you through the numbers.</p>
+
+      <div class="form-grid" id="contactForm">
+        <div class="form-group">
+          <label class="form-label">First Name <span class="req">*</span></label>
+          <input type="text" class="form-input" placeholder="John" id="firstName" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name <span class="req">*</span></label>
+          <input type="text" class="form-input" placeholder="Smith" id="lastName" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Job Title</label>
+          <input type="text" class="form-input" placeholder="Owner, Manager, etc." id="title">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address <span class="req">*</span></label>
+          <input type="email" class="form-input" placeholder="john@smithroofing.com" id="email" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number <span class="req">*</span></label>
+          <input type="tel" class="form-input" placeholder="(555) 123-4567" id="phone" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company Name <span class="req">*</span></label>
+          <input type="text" class="form-input" placeholder="Smith Roofing Co." id="company" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company Website</label>
+          <input type="url" class="form-input" placeholder="https://smithroofing.com" id="website">
+        </div>
+        <div class="form-group">
+          <label class="form-label">City <span class="req">*</span></label>
+          <input type="text" class="form-input" placeholder="Nashville" id="city" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">State <span class="req">*</span></label>
+          <select class="form-select" id="state" required>
+            <option value="" disabled selected>Select state</option>
+            <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
+            <option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option>
+            <option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+            <option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option>
+            <option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option>
+            <option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+            <option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option>
+            <option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option>
+            <option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+            <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option>
+            <option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option>
+            <option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option>
+            <option>Wisconsin</option><option>Wyoming</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Number of Employees</label>
+          <select class="form-select" id="numemployees">
+            <option value="" disabled selected>Select range</option>
+            <option value="1-5">1 – 5</option>
+            <option value="5-25">5 – 25</option>
+            <option value="25-50">25 – 50</option>
+            <option value="50-100">50 – 100</option>
+            <option value="100-500">100 – 500</option>
+            <option value="500-1000">500 – 1,000</option>
+            <option value="1000+">1,000+</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Roofs Installed Per Year <span class="req">*</span></label>
+          <input type="number" class="form-input" placeholder="300" id="roofs" min="0" step="1" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Approximate Annual Revenue</label>
+          <input type="text" class="form-input" placeholder="$8M" id="annualrevenue">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">What's Your Biggest Warranty Headache?</label>
+          <textarea class="form-textarea" placeholder="Callbacks eating margin, warranty claims you're paying out of pocket, trouble differentiating on price..." id="message"></textarea>
+        </div>
+      </div>
+
+      <button class="form-submit" id="submitBtn" onclick="submitForm()">See the Economics</button>
+      <p class="form-note" id="formError" style="display:none;color:var(--red);"></p>
+      <p class="form-note">By submitting, you agree to be contacted by Service Guard. We'll never share your information with third parties.</p>
+    </div>
+
+    <div class="form-success" id="formSuccess">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <h3>Thank You!</h3>
+      <p>We've received your information and a member of our team will be in touch within one business day to schedule your introduction meeting.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer" style="display:flex;justify-content:space-between;align-items:flex-end;padding:32px 48px;border-top:1px solid rgba(0,0,0,0.08);">
+  <div>
+    <img src="logo-wordmark.png" alt="Service Guard" style="filter:brightness(0) invert(1);opacity:0.88;height:36px;width:auto;display:block;margin-bottom:8px;">
+    <div style="font-size:0.78rem;color:rgba(0,0,0,0.35);">Nashville, TN &nbsp;·&nbsp; New York, NY</div>
+  </div>
+  <div style="font-size:0.75rem;color:rgba(0,0,0,0.3);">© 2026 Service Guard. All rights reserved.</div>
+</footer>
+
+<script>
+  const HS_PORTAL_ID = '246469729';
+  const HS_FORM_ID = 'd3c4425b-7409-48cf-88db-d4d6a6d5f69f';
+  const HS_ENDPOINT = 'https://api.hsforms.com/submissions/v3/integration/submit/' + HS_PORTAL_ID + '/' + HS_FORM_ID;
+
+  // Maps each input to its HubSpot contact property. Names must match the
+  // published "Roofers - Become a Partner" form exactly — HubSpot rejects the
+  // whole submission if it receives a field the form doesn't define.
+  const HS_FIELDS = {
+    firstName: 'firstname',
+    lastName: 'lastname',
+    title: 'jobtitle',
+    email: 'email',
+    phone: 'phone',
+    company: 'company',
+    website: 'website',
+    city: 'city',
+    state: 'state',
+    numemployees: 'numemployees',
+    roofs: 'roofs_per_year',
+    annualrevenue: 'annualrevenue',
+    message: 'message',
+  };
+
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : undefined;
+  }
+
+  async function submitForm() {
+    const required = ['firstName','lastName','company','email','phone','city','state','roofs'];
+    const errorEl = document.getElementById('formError');
+    const btn = document.getElementById('submitBtn');
+    let valid = true;
+
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value || el.value === '') {
+        el.style.borderColor = 'var(--red)';
+        valid = false;
+      } else {
+        el.style.borderColor = 'var(--gray-200)';
+      }
+    });
+
+    if (!valid) {
+      errorEl.textContent = 'Please fill in the required fields above.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    const fields = Object.entries(HS_FIELDS)
+      .map(([id, name]) => ({ name, value: document.getElementById(id).value.trim() }))
+      .filter(f => f.value !== '');
+
+    // Tags every inbound lead as a contractor so they never mix with claimants.
+    fields.push({ name: 'hs_role', value: 'Contractor' });
+
+    errorEl.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(HS_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields,
+          context: {
+            // Lets HubSpot tie this to the visitor's tracked session for
+            // conversion attribution and dedupe against existing contacts.
+            hutk: getCookie('hubspotutk'),
+            pageUri: window.location.href,
+            pageName: document.title,
+          },
+        }),
+      });
+
+      if (!res.ok) throw new Error('HubSpot returned ' + res.status + ': ' + await res.text());
+
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+    } catch (err) {
+      console.error('HubSpot submission failed:', err);
+      errorEl.textContent = 'Something went wrong sending your request. Please try again, or email us at info@serviceguardwarranty.com.';
+      errorEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'See the Economics';
+    }
+  }
+</script>
+</body>
+</html>

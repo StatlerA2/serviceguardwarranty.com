@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQs — Service Guard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1E3A5F;
+    --navy-dark: #152C4A;
+    --navy-deep: #0F2038;
+    --accent: #2B6CB0;
+    --accent-light: #63B3ED;
+    --white: #FFFFFF;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: rgba(255,255,255,0.6); background: var(--navy-deep);
+    line-height: 1.6; overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--white); line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  /* ===== NAV ===== */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(15,32,56,0.97);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 68px;
+  }
+  .nav-back {
+    font-size: 0.82rem; color: rgba(255,255,255,0.4);
+    text-decoration: none; display: flex; align-items: center; gap: 6px;
+    transition: var(--transition);
+  }
+  .nav-back:hover { color: rgba(255,255,255,0.8); }
+  .nav-back svg { width: 14px; height: 14px; }
+  .nav-claim {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: var(--white);
+    font-size: 0.82rem; font-weight: 600;
+    padding: 9px 20px; text-decoration: none;
+    transition: var(--transition); letter-spacing: 0.01em;
+  }
+  .nav-claim:hover { background: #1a5a9e; }
+  .nav-claim svg { width: 13px; height: 13px; }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 160px 48px 80px;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .hero-label {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--accent-light); margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 4vw, 3.2rem);
+    font-weight: 800; letter-spacing: -0.03em; margin-bottom: 20px;
+    max-width: 720px;
+  }
+  .hero p {
+    font-size: 1.05rem; color: rgba(255,255,255,0.45);
+    max-width: 560px; line-height: 1.8; margin-bottom: 0;
+  }
+
+  /* ===== DIVIDER ===== */
+  .divider {
+    max-width: 1400px; margin: 0 auto;
+    border: none; border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* ===== FAQ MAIN ===== */
+  .faq-section {
+    max-width: 1400px; margin: 0 auto;
+    padding: 80px 48px 120px;
+    display: grid; grid-template-columns: 240px 1fr; gap: 48px;
+    align-items: start;
+  }
+
+  /* Sidebar */
+  .faq-sidebar { position: sticky; top: 100px; }
+  .faq-sidebar-label {
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.16em; color: rgba(255,255,255,0.25); margin-bottom: 20px;
+  }
+  .faq-nav { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .faq-nav a {
+    display: block; padding: 8px 14px;
+    font-size: 0.85rem; color: rgba(255,255,255,0.35);
+    text-decoration: none; transition: var(--transition);
+    border-left: 2px solid transparent;
+  }
+  .faq-nav a:hover { color: rgba(255,255,255,0.7); border-left-color: rgba(43,108,176,0.4); }
+  .faq-nav a.active { color: var(--white); border-left-color: var(--accent); }
+  .sidebar-cta {
+    margin-top: 40px; padding: 20px;
+    background: rgba(43,108,176,0.08);
+    border: 1px solid rgba(43,108,176,0.18);
+  }
+  .sidebar-cta p {
+    font-size: 0.82rem; color: rgba(255,255,255,0.4);
+    line-height: 1.7; margin-bottom: 14px;
+  }
+  .sidebar-cta a {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: var(--white);
+    font-size: 0.82rem; font-weight: 600;
+    padding: 10px 18px; text-decoration: none;
+    transition: var(--transition); width: 100%; justify-content: center;
+  }
+  .sidebar-cta a:hover { background: #1a5a9e; }
+  .sidebar-cta a svg { width: 13px; height: 13px; }
+
+  /* FAQ items */
+  .faq-list { display: flex; flex-direction: column; }
+  .faq-item {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .faq-q {
+    padding: 28px 0; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 20px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700; font-size: 1.05rem; color: var(--white);
+    background: none; border: none; width: 100%; text-align: left;
+    transition: var(--transition);
+  }
+  .faq-q:hover { color: rgba(255,255,255,0.85); }
+  .faq-q-icon {
+    flex-shrink: 0; width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition); margin-top: 1px;
+  }
+  .faq-q-icon svg {
+    width: 14px; height: 14px; stroke: rgba(255,255,255,0.3);
+    transition: transform 0.3s ease;
+  }
+  .faq-item.open .faq-q-icon { border-color: var(--accent); background: rgba(43,108,176,0.15); }
+  .faq-item.open .faq-q-icon svg { transform: rotate(45deg); stroke: var(--accent-light); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .faq-item.open .faq-a { max-height: 800px; }
+  .faq-a-inner {
+    padding-bottom: 32px; padding-right: 48px;
+  }
+  .faq-a-inner p {
+    font-size: 0.95rem; color: rgba(255,255,255,0.45); line-height: 1.8;
+    margin-bottom: 14px;
+  }
+  .faq-a-inner p:last-child { margin-bottom: 0; }
+  .faq-a-inner ul {
+    margin: 14px 0; padding-left: 0; list-style: none;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .faq-a-inner ul li {
+    position: relative; padding-left: 20px;
+    font-size: 0.92rem; color: rgba(255,255,255,0.4); line-height: 1.6;
+  }
+  .faq-a-inner ul li::before {
+    content: '–'; position: absolute; left: 0; top: 0;
+    color: var(--accent-light);
+  }
+  .faq-a-inner .callout {
+    margin-top: 16px; padding: 14px 18px;
+    background: rgba(255,255,255,0.03);
+    border-left: 3px solid rgba(43,108,176,0.4);
+    font-size: 0.85rem; color: rgba(255,255,255,0.35);
+    line-height: 1.7; font-style: italic;
+  }
+  .faq-a-inner a {
+    color: var(--accent-light); text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .faq-a-inner a:hover { color: var(--white); }
+
+  /* ===== CTA ===== */
+  .cta-section {
+    background: rgba(255,255,255,0.015);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 80px 48px;
+  }
+  .cta-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 40px;
+  }
+  .cta-inner h2 {
+    font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .cta-inner p { font-size: 0.95rem; color: rgba(255,255,255,0.4); line-height: 1.7; max-width: 520px; }
+  .cta-btn {
+    flex-shrink: 0;
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent); color: var(--white);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 600;
+    padding: 14px 32px; text-decoration: none;
+    transition: var(--transition); white-space: nowrap;
+  }
+  .cta-btn:hover { background: #1a5a9e; }
+  .cta-btn svg { width: 16px; height: 16px; }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    padding: 48px; border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex; justify-content: space-between; align-items: flex-end;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .footer-loc { font-size: 0.82rem; color: rgba(255,255,255,0.25); margin-top: 12px; }
+  .footer-right { text-align: right; }
+  .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.15); }
+  .footer-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.3); font-size: 0.82rem;
+    text-decoration: none; margin-bottom: 8px; transition: var(--transition);
+  }
+  .footer-back:hover { color: rgba(255,255,255,0.7); }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 900px) {
+    .faq-section { grid-template-columns: 1fr; gap: 40px; padding: 48px 24px 80px; }
+    .faq-sidebar { position: static; }
+    .faq-nav { display: none; }
+    .hero { padding: 120px 24px 60px; }
+    .nav-inner { padding: 0 24px; }
+    .cta-inner { flex-direction: column; align-items: flex-start; }
+    .cta-section { padding: 60px 24px; }
+    .footer { padding: 32px 24px; flex-direction: column; align-items: flex-start; gap: 20px; }
+    .footer-right { text-align: left; }
+    .faq-a-inner { padding-right: 0; }
+  }
+
+  /* Logo pill — keeps exact brand colors visible on dark background */
+  .logo-pill {
+    display: inline-flex; align-items: center;
+    background: transparent; padding: 6px 14px;
+    border-radius: 5px;
+  }
+  .logo-pill-footer {
+    padding: 5px 12px; border-radius: 4px;
+    opacity: 0.92;
+  }
+
+
+  /* Mobile phone (<=600px): shrink headings and allow wrapping so content fits
+     the screen instead of scrolling sideways. Desktop/tablet unaffected. */
+  @media (max-width: 600px) {
+    body { overflow-x: hidden; }
+    h1, h2, .section-title, .panel-subtitle { white-space: normal !important; overflow-wrap: break-word; }
+    img, table, pre { max-width: 100%; }
+    .hero h1, .team-hero h1, .info-panel h1, .form-header h1 { font-size: clamp(1.7rem, 8vw, 2.4rem) !important; line-height: 1.2; }
+    .section-title, .section h2, .cta h2, .cta-inner h2, .mv-content h2, .values-header h2, .content h2, .form-card h2 { font-size: clamp(1.3rem, 6vw, 1.9rem) !important; line-height: 1.25; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="homeowners.html">
+      <span class="logo-pill"><img src="logo-wordmark.png" alt="Service Guard" style="filter:brightness(0) invert(1);opacity:0.88;height:36px;width:auto;display:block;"></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <a href="homeowners.html" class="nav-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="19 12 5 12"/><polyline points="12 5 5 12 12 19"/></svg>
+        Back
+      </a>
+      <a href="claim.html" class="nav-claim">
+        File a Claim
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">Homeowner Resources</div>
+  <h1>Frequently Asked Questions</h1>
+  <p>Answers to common questions homeowners ask when filing a claim or checking their Service Guard workmanship warranty.</p>
+</section>
+
+<hr class="divider">
+
+<!-- FAQ CONTENT -->
+<section class="faq-section">
+
+  <!-- Sidebar navigation -->
+  <div class="faq-sidebar">
+    <div class="faq-sidebar-label">Questions</div>
+    <ul class="faq-nav">
+      <li><a href="#q1" class="active">What does this warranty cover?</a></li>
+      <li><a href="#q2">How do I file a claim?</a></li>
+      <li><a href="#q3">How long does the process take?</a></li>
+      <li><a href="#q4">What if my claim is denied?</a></li>
+      <li><a href="#q5">What do I need to file?</a></li>
+    </ul>
+    <div class="sidebar-cta">
+      <p>Ready to submit a claim? File online — it only takes a few minutes.</p>
+      <a href="claim.html">
+        File a Claim
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- FAQ list -->
+  <div class="faq-list">
+
+    <!-- Q1 -->
+    <div class="faq-item open" id="q1">
+      <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+        <span>What does a Service Guard warranty actually cover?</span>
+        <span class="faq-q-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>A Service Guard warranty covers workmanship-related issues — meaning problems caused by how your roof was installed, not by the materials themselves or outside forces like weather.</p>
+          <p><strong style="color:rgba(255,255,255,0.7);">What is covered:</strong></p>
+          <ul>
+            <li>Installation errors that cause roof performance problems (e.g. improper flashing, poor sealing, incorrect ventilation)</li>
+            <li>Workmanship-related leaks that stem from how the roof was installed</li>
+            <li>Eligible roof issues tied directly to the contractor's installation work</li>
+          </ul>
+          <p><strong style="color:rgba(255,255,255,0.7);">What is not covered:</strong></p>
+          <ul>
+            <li>Hail, windstorm, tornado, or hurricane damage — this is weather-related and falls under homeowners insurance</li>
+            <li>Normal wear and tear over time</li>
+            <li>Manufacturer defects in the shingles or materials</li>
+            <li>Pre-existing damage that was present before installation</li>
+            <li>Damage from lack of maintenance</li>
+          </ul>
+          <div class="callout">
+            Final coverage terms, exclusions, and claim eligibility are governed by your issued warranty documents. If you're unsure, review your warranty certificate or contact us.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="faq-item" id="q2">
+      <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+        <span>How do I file a claim with Service Guard?</span>
+        <span class="faq-q-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>Filing a claim is done online at the <a href="claim.html">File a Claim</a> page. Here's how the process works:</p>
+          <ol style="list-style:none;padding:0;display:flex;flex-direction:column;gap:16px;margin:16px 0;">
+            <li style="display:flex;align-items:flex-start;gap:14px;">
+              <span style="flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;">1</span>
+              <span><strong style="color:rgba(255,255,255,0.75);">File online</strong><br>Submit the claim form with your policy number, contractor name, installation date, and photos of the issue.</span>
+            </li>
+            <li style="display:flex;align-items:flex-start;gap:14px;">
+              <span style="flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;">2</span>
+              <span><strong style="color:rgba(255,255,255,0.75);">Initial review</strong><br>Service Guard reviews your submission within a few business days to confirm your policy and assess the basic details.</span>
+            </li>
+            <li style="display:flex;align-items:flex-start;gap:14px;">
+              <span style="flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;">3</span>
+              <span><strong style="color:rgba(255,255,255,0.75);">Eligibility check</strong><br>Your claim is evaluated to determine whether the issue falls within workmanship warranty coverage.</span>
+            </li>
+            <li style="display:flex;align-items:flex-start;gap:14px;">
+              <span style="flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;">4</span>
+              <span><strong style="color:rgba(255,255,255,0.75);">Possible inspection</strong><br>If needed, Service Guard may coordinate an on-site inspection or request additional documentation.</span>
+            </li>
+            <li style="display:flex;align-items:flex-start;gap:14px;">
+              <span style="flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;">5</span>
+              <span><strong style="color:rgba(255,255,255,0.75);">Written decision</strong><br>You receive a written decision — covered, denied, or requesting more information.</span>
+            </li>
+          </ol>
+          <p>Have additional photos or documents after submitting? Email them to <a href="mailto:claims@serviceguardwarranty.com">claims@serviceguardwarranty.com</a> with your claim reference number.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="faq-item" id="q3">
+      <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+        <span>How long does the claims process take?</span>
+        <span class="faq-q-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>Timelines vary depending on the complexity of the claim and whether an inspection is needed. Here's a general guide:</p>
+          <ul>
+            <li><strong style="color:rgba(255,255,255,0.65);">Initial acknowledgment:</strong> You'll receive confirmation that your claim was received within 1–2 business days of submission.</li>
+            <li><strong style="color:rgba(255,255,255,0.65);">Initial review:</strong> A Service Guard team member will assess your claim details within 3–5 business days.</li>
+            <li><strong style="color:rgba(255,255,255,0.65);">If an inspection is required:</strong> Scheduling and completing an inspection typically adds 5–10 business days, depending on availability in your area.</li>
+            <li><strong style="color:rgba(255,255,255,0.65);">Coverage decision:</strong> After all information is reviewed, you'll receive a written decision. Total time from submission to decision typically ranges from 2–4 weeks for straightforward claims.</li>
+          </ul>
+          <p>The best way to keep your claim moving: respond promptly when Service Guard requests additional information or documentation.</p>
+          <div class="callout">
+            If you have an active leak causing interior damage, note this on your claim form. Urgent safety concerns are reviewed with priority.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="faq-item" id="q4">
+      <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+        <span>What happens if my claim is denied?</span>
+        <span class="faq-q-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>If your claim is denied, you will receive a written explanation describing why the issue did not qualify under your warranty terms. Common reasons for denial include:</p>
+          <ul>
+            <li>The damage was caused by weather (hail, wind, storm) rather than workmanship</li>
+            <li>The issue is due to normal wear and tear or lack of maintenance</li>
+            <li>The issue is a manufacturer defect in the materials, not an installation error</li>
+            <li>The claim was filed outside the warranty coverage period</li>
+            <li>The roof issue is pre-existing or unrelated to the warranted installation</li>
+          </ul>
+          <p>If you believe the decision is incorrect, you may provide additional documentation or evidence for reconsideration. Contact us at <a href="mailto:claims@serviceguardwarranty.com">claims@serviceguardwarranty.com</a> with your claim reference number to request a review.</p>
+          <div class="callout">
+            A denial does not mean the issue isn't real — it means it falls outside the scope of a workmanship warranty. Weather-related damage is typically covered under your homeowners insurance policy.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="faq-item" id="q5">
+      <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+        <span>What information do I need to file a claim?</span>
+        <span class="faq-q-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner">
+          <p>Before you start, gather the following. Having these ready will make the process faster:</p>
+          <ul>
+            <li><strong style="color:rgba(255,255,255,0.65);">Your policy or warranty number</strong> — This is on your warranty certificate or the documentation you received after your roof was installed.</li>
+            <li><strong style="color:rgba(255,255,255,0.65);">Installing contractor's name</strong> — The name of the roofing company that completed your roof installation.</li>
+            <li><strong style="color:rgba(255,255,255,0.65);">Date of installation</strong> — Approximate or exact date the roof work was completed.</li>
+            <li><strong style="color:rgba(255,255,255,0.65);">Property address</strong> — The address of the home where the roof was installed.</li>
+            <li><strong style="color:rgba(255,255,255,0.65);">Description of the issue</strong> — What you're seeing, where on the roof it appears, and when you first noticed it.</li>
+            <li><strong style="color:rgba(255,255,255,0.65);">Photos</strong> — Clear photos of the affected area, both close-up and from a wider angle. Interior damage photos (e.g. ceiling stains) are also helpful.</li>
+            <li><strong style="color:rgba(255,255,255,0.65);">Weather information</strong> — Note whether there was any recent severe weather in your area.</li>
+          </ul>
+          <p>Don't have your policy number? Check your email for the original warranty documentation sent after installation, or contact the contractor who did the work. You can also reach us at <a href="mailto:info@serviceguardwarranty.com">info@serviceguardwarranty.com</a> and we'll help you locate it.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div>
+      <h2>Ready to File?</h2>
+      <p>Submit your claim online. It takes about five minutes, and a Service Guard team member will follow up within 2–3 business days.</p>
+    </div>
+    <a href="claim.html" class="cta-btn">
+      File a Claim
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-left">
+    <span class="logo-pill logo-pill-footer"><img src="logo-wordmark.png" alt="Service Guard" style="filter:brightness(0) invert(1);opacity:0.88;height:30px;width:auto;display:block;"></span>
+    <div class="footer-loc">Nashville, TN &nbsp;·&nbsp; New York, NY</div>
+  </div>
+  <div class="footer-right">
+    <a href="homeowners.html" class="footer-back">← Back to Homeowners</a>
+    <div class="footer-copy">© 2026 Service Guard. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  // Highlight active FAQ in sidebar on scroll
+  const items = document.querySelectorAll('.faq-item');
+  const navLinks = document.querySelectorAll('.faq-nav a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    items.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      if (rect.top <= 120) current = '#' + item.id;
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === current);
+    });
+  });
+</script>
+</body>
+</html>
