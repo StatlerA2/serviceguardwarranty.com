@@ -90,7 +90,7 @@
   }
   .hero > * { position: relative; z-index: 1; max-width: 1400px; margin-left: auto; margin-right: auto; }
   .hero-label {
-    font-size: 1rem; font-weight: 700; text-transform: uppercase;
+    font-size: 1rem; font-weight: 700; text-transform: none;
     letter-spacing: 0.18em; color: var(--accent-light); margin-bottom: 24px;
   }
   .hero h1 {
@@ -144,7 +144,7 @@
     padding: 100px 48px;
   }
   .section-label {
-    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    font-size: 0.72rem; font-weight: 700; text-transform: none;
     letter-spacing: 0.18em; color: var(--accent-light); margin-bottom: 20px;
   }
   .section-title {
@@ -163,20 +163,20 @@
     background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06);
   }
   .problem-card {
-    background: var(--navy-dark); padding: 48px 40px;
+    background: var(--accent); padding: 48px 40px;
     transition: var(--transition);
   }
-  .problem-card:hover { background: var(--navy); }
+  .problem-card:hover { background: #245C99; }
   .pc-num {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 3.5rem; font-weight: 800;
-    color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: 20px;
+    color: rgba(255,255,255,0.32); line-height: 1; margin-bottom: 20px;
   }
   .problem-card h3 {
-    font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #fff;
   }
   .problem-card p {
-    font-size: 0.9rem; color: rgba(255,255,255,0.45); line-height: 1.7;
+    font-size: 0.9rem; color: rgba(255,255,255,0.85); line-height: 1.7;
   }
 
   /* ===== COMPARISON — side by side ===== */
@@ -194,7 +194,7 @@
     background: var(--navy-deep); color: rgba(255,255,255,0.8);
   }
   .cc-overline {
-    font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.16em;
+    font-size: 0.68rem; text-transform: none; letter-spacing: 0.16em;
     font-weight: 700; margin-bottom: 16px;
   }
   .cc-std .cc-overline { color: var(--accent-light); }
@@ -217,6 +217,7 @@
   .cc-icon svg { width: 12px; height: 12px; }
   .cc-x { background: rgba(197,48,48,0.15); }
   .cc-x svg { stroke: var(--red); }
+  .cc-q { background: rgba(199,154,46,0.18); color: #B7860B; font-weight: 800; font-size: 13px; }
   .cc-check { background: rgba(43,138,62,0.08); }
   .cc-check svg { stroke: var(--green); }
   .cc-a2 .cc-check { background: rgba(72,187,120,0.12); }
@@ -478,7 +479,7 @@
     border-color: var(--accent); background: var(--accent);
   }
   .timeline-time {
-    font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+    font-size: 0.65rem; font-weight: 700; text-transform: none;
     letter-spacing: 0.1em; color: var(--accent-light); margin-bottom: 12px;
   }
   .timeline-title {
@@ -576,7 +577,7 @@
 <section class="hero">
   <div class="hero-label fade-up" style="text-align:center;">For Homeowners</div>
   <h1 class="fade-up">Your Roof Is Backed by a <em>Workmanship Warranty.</em></h1>
-  <p class="hero-sub fade-up">Service Guard provides insurance-backed workmanship warranties for roofing projects. If your contractor installed your roof incorrectly, you're protected — regardless of whether the contractor is still in business.</p>
+  <p class="hero-sub fade-up">Service Guard provides insurance-backed workmanship warranties for roofing projects. If your contractor installed your roof incorrectly, you're legally protected regardless of whether your contractor is still in business or honors their word.</p>
   <div class="hero-actions fade-up">
     <a href="../claim.html" class="hero-btn-claim">
       File a Claim
@@ -602,8 +603,8 @@
   <div class="problem-grid fade-up">
     <div class="problem-card">
       <div class="pc-num">01</div>
-      <h3>Standard Warranties Are Limited</h3>
-      <p>Most roofer warranties only cover the product — not the labor or installation errors that cause the majority of roof failures.</p>
+      <h3>Color Fade Isn't Covered</h3>
+      <p>Over time, UV exposure and natural aging cause shingles to fade and shift in color. Almost all warranties do not account for this, leaving homeowners without recourse when mismatched shingles become visible after a repair.</p>
     </div>
     <div class="problem-card">
       <div class="pc-num">02</div>
@@ -613,7 +614,7 @@
     <div class="problem-card">
       <div class="pc-num">03</div>
       <h3>You're Left Holding the Bill</h3>
-      <p>A roof leak caused by poor workmanship can cost thousands to repair. Without an insurance-backed warranty, that cost comes directly out of your pocket.</p>
+      <p>A roof leak caused by poor workmanship can cost thousands to repair. Without an insurance-backed warranty, that cost could come directly out of your pocket.</p>
     </div>
   </div>
 </section>
@@ -633,20 +634,20 @@
         <div class="cc-overline">What you probably have</div>
         <div class="cc-card-title">Standard Roofer Warranty</div>
         <ul class="cc-list">
-          <li><div class="cc-icon cc-x"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Covers product only — not workmanship</li>
+          <li><div class="cc-icon cc-q">?</div>Covers labor and materials (only if in business or decide to honor their word)</li>
           <li><div class="cc-icon cc-x"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>No legal requirement to pay claims</li>
           <li><div class="cc-icon cc-x"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Void if the contractor closes, relocates, or sells their business</li>
           <li><div class="cc-icon cc-x"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Claims paid by the roofing company — if they choose to</li>
-          <li><div class="cc-icon cc-x"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Not transferable to new owners</li>
+          <li><div class="cc-icon cc-x"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Likely not transferrable to new owners</li>
         </ul>
       </div>
       <div class="compare-card cc-a2">
-        <div class="cc-overline">What this warranty provides</div>
+        <div class="cc-overline">What Our Warranty Provides</div>
         <div class="cc-card-title">Service Guard Workmanship Warranty</div>
         <ul class="cc-list">
           <li><div class="cc-icon cc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Covers both labor and materials</li>
           <li><div class="cc-icon cc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Legally required to pay valid claims</li>
-          <li><div class="cc-icon cc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Backed by a rated and regulated insurance carrier</li>
+          <li><div class="cc-icon cc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Backed by a regulated insurance carrier</li>
           <li><div class="cc-icon cc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Claims paid by the insurance company</li>
           <li><div class="cc-icon cc-check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Fully transferable when you sell your home</li>
         </ul>
@@ -661,7 +662,7 @@
     <div class="eb-content">
       <div class="section-label">How It Works</div>
       <h3>Getting Protected</h3>
-      <p>When you hire a roofer who partners with Service Guard, they purchase a workmanship warranty for your project. This warranty is issued by a rated insurance carrier, creating a legally binding commitment.</p>
+      <p>When you hire a roofer who partners with Service Guard, they include a Service Guard warranty on every project. There is no additional cost to you. This warranty is issued by a rated insurance carrier, creating a legally binding commitment.</p>
       <p>The cost is typically included in your roofing proposal — you don't buy anything separately.</p>
       <div class="eb-callout">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -875,7 +876,7 @@
 <footer class="footer">
   <div class="footer-left">
     <span class="logo-pill logo-pill-footer"><img src="../logo-wordmark.png" alt="Service Guard" style="filter:brightness(0) invert(1);opacity:0.88;height:30px;width:auto;display:block;"></span>
-    <div class="footer-loc">Nashville, TN &nbsp;·&nbsp; New York, NY</div>
+    <div class="footer-loc">Nashville, TN &nbsp;·&nbsp; Philadelphia, PA</div>
   </div>
   <div class="footer-right">
     <a href="../index.html" class="footer-back">← Back</a>
