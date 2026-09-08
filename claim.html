@@ -323,9 +323,13 @@
       <h2>Submit Your Claim</h2>
       <p class="form-sub">All fields marked with <span style="color:var(--accent-light);">*</span> are required.</p>
 
-      <!-- Honeypot: hidden from people, bots tend to fill it. Leave empty. -->
-      <input type="text" id="company_website" name="company_website" tabindex="-1"
-             autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;">
+      <!-- Honeypot: fully hidden with display:none so real browsers, autofill, and
+           password managers do NOT fill it (off-screen fields still get autofilled,
+           which was dropping real claims). Bots that fill every field still trip it. -->
+      <div aria-hidden="true" style="display:none !important">
+        <label for="company_website">Leave this field empty</label>
+        <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
+      </div>
 
 
       <!-- SECTION: Your Information -->
