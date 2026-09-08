@@ -484,6 +484,7 @@
     box.textContent = msg;
     box.style.display = 'block';
     box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    try { window.alert(msg); } catch (e) {}   // guarantees the user sees it
   }
   function hideFormError() {
     document.getElementById('formError').style.display = 'none';
