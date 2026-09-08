@@ -392,7 +392,7 @@
         </div>
         <div class="form-group full">
           <label class="form-label">Was There Recent Severe Weather? <span class="req">*</span></label>
-          <div class="radio-group">
+          <div class="radio-group" id="weatherGroup">
             <label class="radio-label">
               <input type="radio" name="severeWeather" value="yes" onchange="toggleWeather(true)"> Yes
             </label>
@@ -434,6 +434,8 @@
           </label>
         </div>
       </div>
+
+      <div id="formError" role="alert" style="display:none;background:rgba(197,48,48,0.15);border:1px solid rgba(197,48,48,0.55);color:#ffb4ab;padding:12px 14px;border-radius:8px;margin:0 0 18px;font-size:0.9rem;line-height:1.5;"></div>
 
       <!-- SUBMIT -->
       <!-- submitClaim() POSTs the claim to the Service Guard Operations Console
@@ -477,33 +479,48 @@
     document.getElementById('weatherDetail').classList.toggle('visible', show);
   }
 
+  function showFormError(msg) {
+    const box = document.getElementById('formError');
+    box.textContent = msg;
+    box.style.display = 'block';
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function hideFormError() {
+    document.getElementById('formError').style.display = 'none';
+  }
+
   async function submitClaim() {
-    const required = ['fullName', 'email', 'phone', 'contactMethod', 'address',
-                      'contractorName', 'installDate', 'issueType', 'noticeDate', 'issueDesc'];
-    let valid = true;
-    required.forEach(id => {
+    // 1) Validate. Collect EVERY missing field so nothing fails silently.
+    const fields = [
+      ['fullName', 'Full Name'], ['email', 'Email Address'], ['phone', 'Phone Number'],
+      ['contactMethod', 'Preferred Contact Method'], ['address', 'Property Address'],
+      ['contractorName', 'Installing Contractor Name'], ['installDate', 'Date of Roof Installation'],
+      ['issueType', 'Type of Roof Issue'], ['noticeDate', 'When the Issue Was First Noticed'],
+      ['issueDesc', 'Describe the Issue']
+    ];
+    const missing = [];
+    fields.forEach(([id, label]) => {
       const el = document.getElementById(id);
-      if (!el || !el.value.trim()) {
-        if (el) el.style.borderColor = 'rgba(197,48,48,0.6)';
-        valid = false;
-      } else {
-        el.style.borderColor = '';
-      }
+      if (!el || !el.value.trim()) { if (el) el.style.borderColor = 'rgba(197,48,48,0.6)'; missing.push(label); }
+      else { el.style.borderColor = ''; }
     });
 
     const weather = document.querySelector('input[name="severeWeather"]:checked');
-    if (!weather) valid = false;
+    const weatherGroup = document.getElementById('weatherGroup');
+    if (!weather) { missing.push('Was There Recent Severe Weather (Yes/No)'); if (weatherGroup) weatherGroup.style.outline = '2px solid rgba(197,48,48,0.6)'; }
+    else if (weatherGroup) { weatherGroup.style.outline = ''; }
 
     const ack = document.getElementById('acknowledgment');
-    if (!ack.checked) { ack.style.outline = '2px solid rgba(197,48,48,0.6)'; valid = false; }
+    if (!ack.checked) { ack.style.outline = '2px solid rgba(197,48,48,0.6)'; missing.push('the Acknowledgment checkbox'); }
     else { ack.style.outline = ''; }
 
-    if (!valid) {
-      const firstError = document.querySelector('.form-input[style*="border-color"]');
-      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (missing.length) {
+      showFormError('Please complete the following before submitting: ' + missing.join(', ') + '.');
       return;
     }
+    hideFormError();
 
+    // 2) Build payload and submit.
     const val = id => document.getElementById(id).value.trim();
     const payload = {
       claimant_name: val('fullName'),
@@ -523,21 +540,30 @@
 
     const btn = document.querySelector('.form-submit');
     btn.disabled = true; btn.textContent = 'Submitting…';
+
+    // 60s timeout so a cold-started server can't leave the button stuck.
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 60000);
     try {
       const res = await fetch(CLAIMS_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: controller.signal
       });
+      clearTimeout(timeout);
       const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) throw new Error(data.error || ('Error ' + res.status));
+      if (!res.ok || !data.ok) throw new Error(data.error || ('server returned status ' + res.status));
       document.getElementById('formContent').style.display = 'none';
       document.getElementById('formSuccess').classList.add('visible');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
+      clearTimeout(timeout);
       btn.disabled = false; btn.textContent = 'Submit Claim';
-      alert('Sorry, your claim could not be submitted (' + err.message + ').\n'
-            + 'Please try again, or email claims@serviceguardwarranty.com directly.');
+      const reason = (err && err.name === 'AbortError')
+        ? 'the server took too long to respond. It may be waking up, so please wait a few seconds and try again'
+        : (err && err.message) ? err.message : 'network error';
+      showFormError('Sorry, your claim could not be submitted (' + reason + '). Please try again, or email claims@serviceguardwarranty.com directly.');
     }
   }
 </script>
