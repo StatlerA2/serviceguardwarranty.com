@@ -190,6 +190,12 @@
   .pc-num { font-family: var(--head); font-size: 3.6rem; color: rgba(255,255,255,0.4); line-height: 1; margin-bottom: 18px; }
   .problem-card h3 { font-size: 1.6rem; color: var(--white); margin-bottom: 14px; }
   .problem-card p { font-size: 1rem; color: rgba(255,255,255,0.9); line-height: 1.7; }
+  .pc-line { padding: 13px 15px; border-radius: 8px; margin-top: 12px; font-size: 0.98rem; line-height: 1.55; color: rgba(255,255,255,0.92); }
+  .pc-std { background: rgba(255,255,255,0.08); }
+  .pc-sg { background: rgba(255,255,255,0.16); }
+  .pc-tag { display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .pc-std .pc-tag { color: rgba(255,255,255,0.6); }
+  .pc-sg .pc-tag { color: var(--white); }
 
   /* ===== COMPARISON (cream band) ===== */
   .bg-off { background: var(--cream); }
@@ -432,23 +438,26 @@
 
 <!-- THE PROBLEM -->
 <section class="section" id="problem">
-  <h2 class="section-title fade-up" style="white-space:nowrap;">What Most Homeowners Don't Know</h2>
-  <p class="section-desc fade-up">You just paid thousands for a new roof and were told it's "under warranty." But what does that actually mean for you?</p>
+  <h2 class="section-title fade-up">The Problem With Standard Roof Warranties</h2>
+  <p class="section-desc fade-up">Most roof warranties are only as strong as the company behind them. Here's where they fall short, and how Service Guard is different.</p>
   <div class="problem-grid fade-up">
     <div class="problem-card">
       <div class="pc-num">01</div>
-      <h3>Color Fade Isn't Covered</h3>
-      <p>Over time, UV exposure and natural aging cause shingles to fade and shift in color. Almost all warranties do not account for this, leaving homeowners without recourse when mismatched shingles become visible after a repair.</p>
+      <h3>It's Just a Promise</h3>
+      <div class="pc-line pc-std"><span class="pc-tag">Standard</span>Your roofer's word, but no promises.</div>
+      <div class="pc-line pc-sg"><span class="pc-tag">Service Guard</span>Backed by an insurance carrier.</div>
     </div>
     <div class="problem-card">
       <div class="pc-num">02</div>
-      <h3>No Legal Obligation to Pay</h3>
-      <p>If your roofer goes out of business, moves, or simply refuses to honor a warranty, you have little recourse. There's no insurance behind the promise.</p>
+      <h3>It Ends If They Do</h3>
+      <div class="pc-line pc-std"><span class="pc-tag">Standard</span>If your roofer closes, moves, or won't respond, your coverage disappears.</div>
+      <div class="pc-line pc-sg"><span class="pc-tag">Service Guard</span>Your coverage stays in place no matter what happens to the contractor.</div>
     </div>
     <div class="problem-card">
       <div class="pc-num">03</div>
-      <h3>You're Left Holding the Bill</h3>
-      <p>A roof leak caused by poor workmanship can cost thousands to repair. Without an insurance-backed warranty, that cost could come directly out of your pocket.</p>
+      <h3>The Manufacturer Won't Cover It</h3>
+      <div class="pc-line pc-std"><span class="pc-tag">Standard</span>Shingle and manufacturing warranties cover defective materials, not installation mistakes, which cause 95%+ of roof problems.</div>
+      <div class="pc-line pc-sg"><span class="pc-tag">Service Guard</span>Built specifically to cover workmanship failures.</div>
     </div>
   </div>
 </section>
