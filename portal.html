@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contractor Portal — Service Guard</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<!-- SheetJS: reads and writes the same .xlsx submission sheets the Operations Console uses -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  /* ===== Service Guard theme (shared): bold condensed headings, square edges, navy + blue ===== */
+  :root {
+    --ink: #0C121D; --navy: #1E3A5F; --navy-dark: #152C4A; --navy-deep: #0F2038; --footer-bg: #0A1628;
+    --accent: #2B6CB0; --accent-dark: #1F5592; --accent-light: #6FA8DC;
+    --white: #FFFFFF; --paper: #F4F6F9; --line: #D9DFE7;
+    --gray-400: #8C96A6; --gray-500: #556072; --gray-600: #3F4A5C; --gray-700: #263142;
+    --green: #2B8A3E; --green-bg: #E7F5EA; --amber: #8A5A00; --amber-bg: #FDF3D6; --red: #C53030; --red-bg: #FDECEA;
+    --head: 'Anton', 'Impact', sans-serif;
+    --body: 'Source Sans 3', 'Source Sans Pro', sans-serif;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--body); color: var(--gray-700); background: var(--paper); font-size: 16px; line-height: 1.6; }
+  h1, h2, h3 { font-family: var(--head); font-weight: 400; color: var(--ink); text-transform: uppercase; line-height: 1.05; letter-spacing: 0.005em; }
+  a { color: var(--accent); }
+  [hidden] { display: none !important; }
+
+  /* ===== NAV ===== */
+  .nav { position: sticky; top: 0; z-index: 100; background: var(--navy-deep); border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .nav-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 76px; gap: 16px; }
+  .nav .logo-img { height: 46px; width: auto; display: block; filter: brightness(0) invert(1); }
+  .nav-right { display: flex; align-items: center; gap: 22px; }
+  .nav-right a.navlink { color: rgba(255,255,255,0.78); text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+  .nav-right a.navlink:hover { color: var(--white); }
+  .who { color: rgba(255,255,255,0.78); font-size: 0.85rem; white-space: nowrap; }
+  .who b { color: var(--white); }
+  .linkbtn { background: none; border: 0; color: var(--accent-light); font: inherit; font-size: 0.85rem; cursor: pointer; text-decoration: underline; padding: 0; }
+
+  /* ===== PREVIEW BANNER ===== */
+  .preview { background: var(--amber-bg); color: #5a4a12; border-bottom: 1px solid #e6cf8a; font-size: 0.88rem; }
+  .preview div { max-width: 1280px; margin: 0 auto; padding: 9px 40px; }
+
+  /* ===== LAYOUT ===== */
+  main { max-width: 1180px; margin: 0 auto; padding: 36px 40px 80px; }
+  .card { background: var(--white); border: 1px solid var(--line); padding: 26px 28px; margin-bottom: 20px; }
+  .eyebrow { font-family: var(--head); text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); font-size: 0.85rem; margin-bottom: 8px; }
+  .lead { color: var(--gray-500); max-width: 720px; }
+  .muted { color: var(--gray-500); font-size: 0.9rem; }
+  .back { display: inline-block; margin-bottom: 14px; font-size: 0.9rem; text-decoration: none; }
+
+  /* ===== BUTTONS + FORMS ===== */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 24px; border: 0; cursor: pointer;
+         background: var(--accent); color: var(--white); font-family: var(--body); font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; transition: var(--transition); }
+  .btn:hover { background: var(--accent-dark); }
+  .btn:disabled { background: var(--gray-400); cursor: not-allowed; }
+  .btn.ghost { background: transparent; color: var(--navy); border: 1px solid var(--line); }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.green { background: var(--green); } .btn.green:hover { background: #22702f; }
+  .btn.small { min-height: 34px; padding: 0 14px; font-size: 0.72rem; }
+  label { display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-600); margin: 0 0 6px; }
+  input, select, textarea { width: 100%; font: inherit; font-size: 0.95rem; padding: 10px 12px; border: 1px solid var(--line); background: var(--white); color: var(--ink); }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent-light); outline-offset: -1px; border-color: var(--accent); }
+  .grid { display: grid; gap: 14px 16px; }
+  .g2 { grid-template-columns: repeat(2, 1fr); } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+  .span2 { grid-column: span 2; } .span3 { grid-column: span 3; } .span4 { grid-column: 1 / -1; }
+  .req::after { content: " *"; color: var(--red); }
+
+  /* ===== LOGIN ===== */
+  .login-wrap { display: grid; grid-template-columns: 1.1fr 1fr; min-height: calc(100vh - 140px); }
+  .login-side { background: var(--navy-deep); color: rgba(255,255,255,0.85); padding: 64px 56px; display: flex; flex-direction: column; justify-content: center; }
+  .login-side h1 { color: var(--white); font-size: clamp(2.2rem, 4vw, 3.4rem); margin-bottom: 18px; }
+  .login-side ul { list-style: none; margin-top: 22px; }
+  .login-side li { padding: 10px 0 10px 30px; position: relative; border-top: 1px solid rgba(255,255,255,0.08); }
+  .login-side li::before { content: "✓"; position: absolute; left: 0; color: var(--accent-light); font-weight: 800; }
+  .login-form { display: flex; align-items: center; justify-content: center; padding: 48px 32px; }
+  .login-form .card { width: 100%; max-width: 420px; margin: 0; }
+  .login-form h2 { font-size: 1.8rem; margin-bottom: 6px; }
+  .field { margin-bottom: 16px; }
+  .error { background: var(--red-bg); color: var(--red); padding: 10px 12px; font-size: 0.9rem; margin-bottom: 14px; }
+
+  /* ===== HOME ===== */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 22px 0 0; }
+  .stat { background: var(--paper); padding: 16px 18px; border-left: 3px solid var(--accent); }
+  .stat .n { font-family: var(--head); font-size: 2rem; color: var(--ink); line-height: 1; }
+  .stat .l { color: var(--gray-500); font-size: 0.85rem; margin-top: 6px; }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .action { background: var(--white); border: 1px solid var(--line); padding: 28px; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 10px; transition: var(--transition); position: relative; }
+  .action:hover { border-color: var(--accent); box-shadow: 0 10px 28px rgba(15,32,56,0.10); transform: translateY(-2px); }
+  .action .ico { width: 46px; height: 46px; background: var(--navy-deep); display: grid; place-items: center; }
+  .action .ico svg { width: 24px; height: 24px; stroke: var(--white); }
+  .action h3 { font-size: 1.6rem; }
+  .action .go { margin-top: auto; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th { text-align: left; background: var(--navy-deep); color: var(--white); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 12px; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .table-wrap { overflow-x: auto; }
+  .badge { display: inline-block; padding: 2px 10px; font-size: 0.75rem; font-weight: 700; white-space: nowrap; }
+  .b-ok { background: var(--green-bg); color: var(--green); } .b-warn { background: var(--amber-bg); color: var(--amber); }
+  .b-bad { background: var(--red-bg); color: var(--red); } .b-info { background: #E8F0FA; color: var(--accent-dark); }
+
+  /* ===== FLOWS ===== */
+  .steps { display: flex; gap: 0; margin: 18px 0 4px; counter-reset: step; flex-wrap: wrap; }
+  .step { flex: 1; min-width: 150px; padding: 10px 14px; border-bottom: 3px solid var(--line); color: var(--gray-400); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .step.on { border-color: var(--accent); color: var(--ink); }
+  .step.done { border-color: var(--green); color: var(--green); }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+  .tab { background: none; border: 0; border-bottom: 3px solid transparent; padding: 12px 18px; font: inherit; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-500); cursor: pointer; margin-bottom: -1px; }
+  .tab.on { color: var(--ink); border-color: var(--accent); }
+  .drop { border: 2px dashed var(--line); background: var(--paper); padding: 34px; text-align: center; cursor: pointer; transition: var(--transition); }
+  .drop:hover, .drop.over { border-color: var(--accent); background: #EEF4FB; }
+  .drop b { color: var(--ink); }
+  .rowbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: space-between; margin: 16px 0 10px; }
+  .summary { display: flex; gap: 10px; flex-wrap: wrap; }
+  .issues { margin: 4px 0 0 16px; font-size: 0.82rem; }
+  .issues li.e { color: var(--red); } .issues li.w { color: var(--amber); }
+  tr.bad td { background: #FFF7F6; }
+  .x { background: none; border: 0; color: var(--gray-400); cursor: pointer; font-size: 1.1rem; line-height: 1; }
+  .x:hover { color: var(--red); }
+  .confirm { text-align: center; padding: 46px 28px; }
+  .confirm .tick { width: 64px; height: 64px; border-radius: 50%; background: var(--green-bg); display: grid; place-items: center; margin: 0 auto 16px; }
+  .confirm .tick svg { width: 32px; height: 32px; stroke: var(--green); }
+  .confirm h2 { font-size: 2rem; margin-bottom: 8px; }
+  .ref { font-family: ui-monospace, Menlo, monospace; font-size: 1.1rem; background: var(--paper); padding: 6px 12px; display: inline-block; margin: 10px 0 18px; }
+
+  footer { background: var(--footer-bg); color: rgba(255,255,255,0.55); font-size: 0.85rem; }
+  footer div { max-width: 1280px; margin: 0 auto; padding: 22px 40px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  footer a { color: rgba(255,255,255,0.75); }
+
+  @media (max-width: 900px) {
+    .login-wrap { grid-template-columns: 1fr; }
+    .login-side { padding: 40px 24px; }
+    .actions, .stats { grid-template-columns: 1fr; }
+    .g3, .g4 { grid-template-columns: repeat(2, 1fr); }
+    .span3 { grid-column: 1 / -1; }
+  }
+  @media (max-width: 600px) {
+    .nav-inner, .preview div, main, footer div { padding-left: 16px; padding-right: 16px; }
+    .nav-right a.navlink { display: none; }
+    .g2, .g3, .g4 { grid-template-columns: 1fr; }
+    .span2, .span3 { grid-column: auto; }
+    .card { padding: 20px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="/"><img src="service-guard-logo.png" alt="Service Guard" class="logo-img"></a>
+    <div class="nav-right">
+      <a class="navlink" href="/">For Homeowners</a>
+      <a class="navlink" href="roofers.html">For Roofers</a>
+      <span class="who" id="who" hidden>Signed in as <b id="who-name"></b> &middot; <button class="linkbtn" id="signout">Sign out</button></span>
+    </div>
+  </div>
+</nav>
+<div class="preview"><div><b>Preview.</b> The contractor portal isn't live yet: nothing entered here is sent to Service Guard,
+  and any username and password opens a demo account. Please don't enter real passwords or homeowner details.</div></div>
+
+<!-- ============================ SIGN IN ============================ -->
+<section id="view-login" class="login-wrap">
+  <div class="login-side">
+    <div class="eyebrow" style="color:var(--accent-light)">Service Guard Partners</div>
+    <h1>Contractor Portal</h1>
+    <p>Your home base for the Service Guard warranty program.</p>
+    <ul>
+      <li>Register the roofs you install each month: upload your submission sheet or add them one at a time.</li>
+      <li>Submit warranty claims for your customers and see where each one stands.</li>
+      <li>Every submission is checked instantly, so problems get fixed before they reach us.</li>
+    </ul>
+  </div>
+  <div class="login-form">
+    <form class="card" id="login-form" autocomplete="off" novalidate>
+      <h2>Sign in</h2>
+      <p class="muted" style="margin-bottom:18px">Use the login Service Guard set up for your company.</p>
+      <div class="error" id="login-error" hidden></div>
+      <div class="field"><label for="u">Username</label><input id="u" name="username" autocomplete="off"></div>
+      <div class="field"><label for="p">Password</label><input id="p" name="password" type="password" autocomplete="off"></div>
+      <button class="btn" type="submit" style="width:100%">Sign in</button>
+      <p class="muted" style="margin-top:16px">Need an account or forgot your password? Email
+        <a href="mailto:info@serviceguardwarranty.com">info@serviceguardwarranty.com</a>.</p>
+    </form>
+  </div>
+</section>
+
+<main id="app" hidden>
+
+  <!-- ============================ HOME ============================ -->
+  <section id="view-home">
+    <div class="card">
+      <div class="eyebrow">Contractor Portal</div>
+      <h1 style="font-size:2.4rem">Welcome back, <span id="co-name"></span></h1>
+      <p class="muted">Partner #<span id="co-partner"></span></p>
+      <div class="stats">
+        <div class="stat"><div class="n" id="st-policies">0</div><div class="l">Registered roofs</div></div>
+        <div class="stat"><div class="n" id="st-pending">0</div><div class="l">Submissions under review</div></div>
+        <div class="stat"><div class="n" id="st-claims">0</div><div class="l">Open claims</div></div>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="action" href="#roofs">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M12 13v5M9.5 15.5h5"/></svg></div>
+        <h3>Register new roofs</h3>
+        <p class="muted">Upload this month's submission sheet or add roofs one by one. Each roof is checked before you submit.</p>
+        <span class="go">Start registration &rarr;</span>
+      </a>
+      <a class="action" href="#claims">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 12v4M12 18.5v.5"/></svg></div>
+        <h3>Submit a claim</h3>
+        <p class="muted">Report a warranty issue on one of your registered roofs, or upload several claims at once.</p>
+        <span class="go">Start a claim &rarr;</span>
+      </a>
+    </div>
+    <div class="card">
+      <h3 style="font-size:1.4rem;margin-bottom:12px">Recent activity</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Reference</th><th>Type</th><th>Details</th><th>Submitted</th><th>Status</th></tr></thead>
+        <tbody id="activity"></tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:1.4rem;margin-bottom:12px">Your registered roofs</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Policy #</th><th>Address</th><th>Homeowner</th><th>Installed</th><th>Squares</th><th>Status</th></tr></thead>
+        <tbody id="policies"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- ============================ REGISTER ROOFS ============================ -->
+  <section id="view-roofs" hidden>
+    <a class="back" href="#home">&larr; Portal home</a>
+    <div class="card" id="roofs-flow">
+      <div class="eyebrow">Register new roofs</div>
+      <h2 style="font-size:2rem">Add the roofs you installed</h2>
+      <div class="steps"><div class="step on" id="rs1">1. Add roofs</div><div class="step" id="rs2">2. Review</div><div class="step" id="rs3">3. Submit</div></div>
+
+      <div class="grid g3" style="margin:18px 0 6px">
+        <div><label class="req" for="rmonth">Reporting month</label><input type="month" id="rmonth"></div>
+        <div class="span2 muted" style="align-self:end">The month these installs belong to. Roofs installed in a different month are flagged so you can double-check them.</div>
+      </div>
+
+      <div class="tabs" style="margin-top:18px">
+        <button class="tab on" data-tab="r-upload">Upload sheet</button>
+        <button class="tab" data-tab="r-manual">Add one at a time</button>
+      </div>
+
+      <div id="r-upload">
+        <div class="drop" id="roof-drop" tabindex="0">
+          <p><b>Drop your roof submission sheet here</b> or click to choose a file (.xlsx)</p>
+          <p class="muted">Same sheet you send us today: company in cell C4, reporting month in C5, roofs from row 8.</p>
+          <input type="file" id="roof-file" accept=".xlsx" hidden>
+        </div>
+        <p style="margin-top:10px"><button class="btn ghost small" id="roof-template">Download a blank sheet</button></p>
+      </div>
+
+      <form id="r-manual" hidden novalidate>
+        <div class="grid g4">
+          <div class="span2"><label class="req">Property address</label><input name="property_address"></div>
+          <div><label>City</label><input name="city"></div>
+          <div class="grid g2" style="gap:0 10px"><div><label>State</label><input name="state" maxlength="2" placeholder="IN"></div><div><label>ZIP</label><input name="zip"></div></div>
+          <div class="span2"><label class="req">Homeowner name</label><input name="homeowner_name"></div>
+          <div><label>Homeowner email</label><input name="homeowner_email" type="email"></div>
+          <div><label>Homeowner phone</label><input name="homeowner_phone"></div>
+          <div><label class="req">Installation date</label><input name="installation_date" type="date"></div>
+          <div><label class="req">Squares</label><input name="squares" type="number" min="1" step="0.1"></div>
+          <div class="span2"><label>Shingle lot #</label><input name="shingle_lot" placeholder="e.g. OC-2026-500000"></div>
+        </div>
+        <p style="margin-top:14px"><button class="btn" type="submit">Add roof to this submission</button></p>
+      </form>
+
+      <div id="roof-review" hidden>
+        <div class="rowbar">
+          <h3 style="font-size:1.4rem">Review</h3>
+          <div class="summary" id="roof-summary"></div>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>#</th><th>Property</th><th>Homeowner</th><th>Installed</th><th>Squares</th><th>Lot #</th><th>Check</th><th></th></tr></thead>
+          <tbody id="roof-rows"></tbody>
+        </table></div>
+        <p class="muted" style="margin-top:10px">Rows marked <span class="badge b-bad">Needs a fix</span> won't be submitted; fix them in your sheet and upload again,
+          or remove them. <span class="badge b-warn">Check</span> rows are submitted, and we'll take a second look.</p>
+        <div class="rowbar">
+          <button class="btn ghost" id="roof-clear" type="button">Start over</button>
+          <button class="btn green" id="roof-submit" type="button">Submit roofs</button>
+        </div>
+      </div>
+    </div>
+    <div class="card confirm" id="roofs-done" hidden>
+      <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+      <h2>Roofs received</h2>
+      <p class="muted" id="roofs-done-text"></p>
+      <div class="ref" id="roofs-ref"></div>
+      <p class="muted">We'll review them and send your invoice. Coverage starts once the invoice is paid.</p>
+      <p style="margin-top:20px"><a class="btn" href="#home">Back to portal home</a> <button class="btn ghost" id="roofs-again" type="button">Register more roofs</button></p>
+    </div>
+  </section>
+
+  <!-- ============================ SUBMIT CLAIMS ============================ -->
+  <section id="view-claims" hidden>
+    <a class="back" href="#home">&larr; Portal home</a>
+    <div class="card" id="claims-flow">
+      <div class="eyebrow">Submit a claim</div>
+      <h2 style="font-size:2rem">Report a warranty issue</h2>
+      <div class="tabs" style="margin-top:18px">
+        <button class="tab on" data-tab="c-single">One claim</button>
+        <button class="tab" data-tab="c-upload">Upload several</button>
+      </div>
+
+      <form id="c-single" novalidate>
+        <div class="grid g4">
+          <div class="span4"><label class="req" for="c-policy">Which roof?</label>
+            <select id="c-policy" name="policy"></select>
+            <p class="muted" style="margin-top:4px">Only roofs registered under your company are listed.</p></div>
+          <div class="span2"><label class="req">Homeowner / claimant name</label><input name="claimant_name"></div>
+          <div><label>Claimant email</label><input name="claimant_email" type="email"></div>
+          <div><label>Claimant phone</label><input name="claimant_phone"></div>
+          <div class="span2"><label class="req">Issue type</label>
+            <select name="issue_type">
+              <option value="">Choose one</option><option>Roof leak</option><option>Wind damage / missing shingles</option>
+              <option>Flashing failure</option><option>Granule loss / blistering</option><option>Improper installation</option><option>Other</option>
+            </select></div>
+          <div><label>Date first noticed</label><input name="date_noticed" type="date"></div>
+          <div><label>Recent severe weather?</label><select name="severe_weather"><option value="">Not sure</option><option>Yes</option><option>No</option></select></div>
+          <div class="span4"><label class="req">What's happening?</label><textarea name="description" rows="4" placeholder="Where is the problem, when did it start, and what have you seen?"></textarea></div>
+        </div>
+        <div class="error" id="c-error" hidden style="margin-top:14px"></div>
+        <p style="margin-top:14px"><button class="btn green" type="submit">Submit claim</button></p>
+      </form>
+
+      <div id="c-upload" hidden>
+        <div class="drop" id="claim-drop" tabindex="0">
+          <p><b>Drop your claims sheet here</b> or click to choose a file (.xlsx)</p>
+          <p class="muted">Company in cell C4, claims from row 8. Each claim is matched to one of your registered roofs by address.</p>
+          <input type="file" id="claim-file" accept=".xlsx" hidden>
+        </div>
+        <p style="margin-top:10px"><button class="btn ghost small" id="claim-template">Download a blank claims sheet</button></p>
+        <div id="claim-review" hidden>
+          <div class="rowbar"><h3 style="font-size:1.4rem">Review</h3><div class="summary" id="claim-summary"></div></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>#</th><th>Property</th><th>Claimant</th><th>Issue</th><th>Matched policy</th><th>Check</th><th></th></tr></thead>
+            <tbody id="claim-rows"></tbody>
+          </table></div>
+          <div class="rowbar">
+            <button class="btn ghost" id="claim-clear" type="button">Start over</button>
+            <button class="btn green" id="claim-submit" type="button">Submit claims</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card confirm" id="claims-done" hidden>
+      <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+      <h2>Claim received</h2>
+      <p class="muted" id="claims-done-text"></p>
+      <div class="ref" id="claims-ref"></div>
+      <p class="muted">A Service Guard team member reviews every claim and will follow up with you and the homeowner.</p>
+      <p style="margin-top:20px"><a class="btn" href="#home">Back to portal home</a> <button class="btn ghost" id="claims-again" type="button">Submit another</button></p>
+    </div>
+  </section>
+</main>
+
+<footer><div><span>&copy; 2026 Service Guard. All rights reserved.</span>
+  <span><a href="/">Homeowners</a> &middot; <a href="roofers.html">Roofers</a> &middot; <a href="privacy.html">Privacy</a></span></div></footer>
+
+<script>
+/* Contractor Portal (preview)
+ * Front-end prototype. Sign-in is simulated and submissions stay in this
+ * browser. The checks mirror the Operations Console's import rules, so moving
+ * to the live version means swapping the demo data/storage for console API
+ * calls, not rewriting the flows. */
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  var esc = function (v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var STORE = "sg-portal-demo";
+
+  // ----- demo account (replaced by the console once the portal goes live) -----
+  var DEMO = {
+    company: "Action Roofing", partner: 2,
+    policies: [
+      { policy: "2-0000101", address: "7955 Dogwood Ln", city: "Zionsville", state: "IN", zip: "46077", homeowner: "Emily Watts", installed: "2026-09-13", squares: 43, status: "Active" },
+      { policy: "2-0000102", address: "7209 Walnut Way", city: "Zionsville", state: "IN", zip: "46077", homeowner: "Daniel Watts", installed: "2026-09-13", squares: 19, status: "Active" },
+      { policy: "2-0000103", address: "2181 Maple Ave", city: "Carmel", state: "IN", zip: "46032", homeowner: "Tyler Hale", installed: "2026-09-20", squares: 51.3, status: "Active" },
+      { policy: "2-0000104", address: "2654 Hickory Ln", city: "Noblesville", state: "IN", zip: "46060", homeowner: "Michael Voss", installed: "2026-09-17", squares: 21, status: "Active" },
+      { policy: "2-0000105", address: "558 Cedar Ln", city: "Carmel", state: "IN", zip: "46032", homeowner: "Laura Pratt", installed: "2026-09-09", squares: 46, status: "Pending payment" }
+    ],
+    activity: [
+      { ref: "SG-R-260930-4471", type: "Roof registration", details: "5 roofs, Sep 2026", when: "2026-09-30", status: "Registered" }
+    ]
+  };
+  var state = load();
+
+  function load() {
+    try { var s = JSON.parse(sessionStorage.getItem(STORE)); if (s && s.user) return s; } catch (e) {}
+    return { user: null };
+  }
+  function save() { try { sessionStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} }
+
+  // ----- small helpers -----
+  var STATES = "AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY".split(" ");
+  var MONTHS = ["january","february","march","april","may","june","july","august","september","october","november","december"];
+  function norm(s) { return String(s || "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function iso(d) { return d ? d.y + "-" + pad(d.m) + "-" + pad(d.d) : ""; }
+  function pretty(isoStr) {
+    if (!isoStr) return "";
+    var p = isoStr.split("-"); return MONTHS[+p[1] - 1].slice(0, 3).replace(/^./, function (c) { return c.toUpperCase(); }) + " " + (+p[2]) + ", " + p[0];
+  }
+  function today() { var t = new Date(); return { y: t.getFullYear(), m: t.getMonth() + 1, d: t.getDate() }; }
+  function ref(prefix) { var t = today(); return prefix + "-" + String(t.y).slice(2) + pad(t.m) + pad(t.d) + "-" + Math.floor(1000 + Math.random() * 9000); }
+
+  // Dates arrive as Excel serial numbers, MM/DD/YYYY, M/D/YY or YYYY-MM-DD.
+  function parseDate(v) {
+    if (v == null || v === "") return null;
+    if (typeof v === "number" && window.XLSX) { var c = XLSX.SSF.parse_date_code(v); return c ? { y: c.y, m: c.m, d: c.d } : null; }
+    var s = String(v).trim(), m;
+    if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) return valid(+m[1], +m[2], +m[3]);
+    if ((m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/))) return valid(m[3].length === 2 ? 2000 + +m[3] : +m[3], +m[1], +m[2]);
+    return null;
+  }
+  function valid(y, m, d) { var t = new Date(y, m - 1, d); return (t.getFullYear() === y && t.getMonth() === m - 1 && t.getDate() === d) ? { y: y, m: m, d: d } : null; }
+  // Reporting month: "September 2026", "Sep 2026", "2026-09", "09/2026" or a date.
+  function parseMonth(v) {
+    if (v == null || v === "") return "";
+    if (typeof v === "number") { var d = parseDate(v); return d ? d.y + "-" + pad(d.m) : ""; }
+    var s = String(v).trim().toLowerCase(), m;
+    if ((m = s.match(/^([a-z]{3,9})\.?\s+(\d{4})$/))) { var i = MONTHS.findIndex(function (x) { return x.indexOf(m[1].slice(0, 3)) === 0; }); return i >= 0 ? m[2] + "-" + pad(i + 1) : ""; }
+    if ((m = s.match(/^(\d{4})-(\d{1,2})/))) return m[1] + "-" + pad(+m[2]);
+    if ((m = s.match(/^(\d{1,2})\/(\d{4})$/))) return m[2] + "-" + pad(+m[1]);
+    return "";
+  }
+
+  // ----- sign in / out (simulated) -----
+  $("#login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var u = $("#u").value.trim(), p = $("#p").value;
+    if (!u || !p) { $("#login-error").textContent = "Enter your username and password."; $("#login-error").hidden = false; return; }
+    // Preview: any credentials open the demo account. The password is never stored or sent.
+    $("#p").value = "";
+    state = { user: u, company: DEMO.company, partner: DEMO.partner,
+              policies: DEMO.policies.slice(), activity: DEMO.activity.slice() };
+    save(); location.hash = "#home"; route();
+  });
+  $("#signout").addEventListener("click", function () {
+    state = { user: null }; save(); location.hash = ""; route();
+  });
+
+  // ----- routing -----
+  function route() {
+    var signedIn = !!state.user;
+    $("#view-login").hidden = signedIn; $("#app").hidden = !signedIn; $("#who").hidden = !signedIn;
+    if (!signedIn) return;
+    $("#who-name").textContent = state.user;
+    var view = (location.hash || "#home").slice(1);
+    if (["home", "roofs", "claims"].indexOf(view) < 0) view = "home";
+    ["home", "roofs", "claims"].forEach(function (v) { $("#view-" + v).hidden = v !== view; });
+    if (view === "home") renderHome();
+    // Opening a flow always starts fresh (not on the last confirmation screen).
+    if (view === "roofs") { $("#roofs-done").hidden = true; $("#roofs-flow").hidden = false; $("#rs3").className = "step"; renderRoofs(); }
+    if (view === "claims") { $("#claims-done").hidden = true; $("#claims-flow").hidden = false; fillPolicySelect(); }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+
+  function renderHome() {
+    $("#co-name").textContent = state.company; $("#co-partner").textContent = state.partner;
+    $("#st-policies").textContent = state.policies.length;
+    $("#st-pending").textContent = state.activity.filter(function (a) { return a.type === "Roof registration" && a.status === "Under review"; }).length;
+    $("#st-claims").textContent = state.activity.filter(function (a) { return a.type === "Claim" && a.status !== "Closed"; }).length;
+    $("#activity").innerHTML = state.activity.map(function (a) {
+      var cls = a.status === "Registered" ? "b-ok" : "b-info";
+      return "<tr><td>" + esc(a.ref) + "</td><td>" + esc(a.type) + "</td><td>" + esc(a.details) + "</td><td>" + esc(pretty(a.when)) +
+             "</td><td><span class='badge " + cls + "'>" + esc(a.status) + "</span></td></tr>";
+    }).join("") || "<tr><td colspan=5 class=muted>Nothing yet.</td></tr>";
+    $("#policies").innerHTML = state.policies.map(function (p) {
+      return "<tr><td>" + esc(p.policy) + "</td><td>" + esc(p.address) + ", " + esc(p.city) + " " + esc(p.state) + "</td><td>" + esc(p.homeowner) +
+             "</td><td>" + esc(pretty(p.installed)) + "</td><td>" + esc(p.squares) + "</td><td><span class='badge " +
+             (p.status === "Active" ? "b-ok" : "b-warn") + "'>" + esc(p.status) + "</span></td></tr>";
+    }).join("");
+  }
+  function addActivity(type, details, status) {
+    var r = ref(type === "Claim" ? "SG-C" : "SG-R");
+    state.activity.unshift({ ref: r, type: type, details: details, when: iso(today()), status: status });
+    save(); return r;
+  }
+
+  // ----- tabs -----
+  $$(".tabs").forEach(function (bar) {
+    bar.addEventListener("click", function (e) {
+      var b = e.target.closest(".tab"); if (!b) return;
+      bar.querySelectorAll(".tab").forEach(function (t) { t.classList.toggle("on", t === b); document.getElementById(t.dataset.tab).hidden = t !== b; });
+    });
+  });
+
+  // ----- spreadsheet reading / templates -----
+  function readSheet(buf, wanted, cols) {
+    var wb = XLSX.read(buf, { type: "array" });
+    var ws = wb.Sheets[wanted] || wb.Sheets[wb.SheetNames[0]];
+    var cell = function (a) { var c = ws[a]; return c ? c.v : ""; };
+    var range = XLSX.utils.decode_range(ws["!ref"] || "A1:A1"), rows = [];
+    for (var r = 7; r <= range.e.r; r++) {            // row 8 in Excel = index 7
+      var rec = { _row: r + 1 }, empty = true;
+      cols.forEach(function (k, i) { var c = ws[XLSX.utils.encode_cell({ r: r, c: i })]; rec[k] = c ? c.v : ""; if (rec[k] !== "") empty = false; });
+      if (empty || String(rec[cols[0]]).trim().toUpperCase().indexOf("EXAMPLE") === 0) continue;
+      rows.push(rec);
+    }
+    return { company: String(cell("C4") || "").trim(), month: parseMonth(cell("C5")), rows: rows };
+  }
+  function template(sheetName, headers, file, withMonth) {
+    var aoa = [[], [], [], ["Roofing Company:", "", state.company]];
+    aoa.push(withMonth ? ["Reporting Month:", "", ""] : []);
+    aoa.push([]); aoa.push(headers);
+    aoa.push(headers.map(function (h, i) { return i === 0 ? "EXAMPLE - delete this row" : ""; }));
+    var ws = XLSX.utils.aoa_to_sheet(aoa); ws["!cols"] = headers.map(function () { return { wch: 20 }; });
+    var wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, sheetName); XLSX.writeFile(wb, file);
+  }
+  function wireDrop(dropSel, inputSel, onBuffer) {
+    var drop = $(dropSel), input = $(inputSel);
+    var take = function (f) {
+      if (!f) return;
+      if (!/\.xlsx$/i.test(f.name)) { alert("Please choose an .xlsx file."); return; }
+      var r = new FileReader(); r.onload = function () { onBuffer(new Uint8Array(r.result), f.name); }; r.readAsArrayBuffer(f);
+    };
+    drop.addEventListener("click", function () { input.click(); });
+    drop.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+    input.addEventListener("change", function () { take(input.files[0]); input.value = ""; });
+    drop.addEventListener("dragover", function (e) { e.preventDefault(); drop.classList.add("over"); });
+    drop.addEventListener("dragleave", function () { drop.classList.remove("over"); });
+    drop.addEventListener("drop", function (e) { e.preventDefault(); drop.classList.remove("over"); take(e.dataTransfer.files[0]); });
+  }
+
+  // ===================== REGISTER ROOFS =====================
+  var ROOF_COLS = ["property_address", "city", "state", "zip", "homeowner_name", "homeowner_email", "homeowner_phone", "installation_date", "squares", "shingle_lot"];
+  var ROOF_HEAD = ["Property Address", "City", "State", "ZIP", "Homeowner Name", "Homeowner Email", "Homeowner Phone", "Installation Date", "Squares", "Shingle Lot #"];
+  var roofs = [];
+  var sheetNote = "";
+
+  // Same checks as the Operations Console import: required fields, sane dates
+  // and sizes, valid state, no duplicate address, install month vs reporting month.
+  function checkRoofs() {
+    var month = $("#rmonth").value, seen = {}, t = today();
+    var registered = {}; state.policies.forEach(function (p) { registered[norm(p.address)] = p.policy; });
+    roofs.forEach(function (r) {
+      var e = [], w = [];
+      [["property_address", "property address"], ["homeowner_name", "homeowner name"], ["installation_date", "installation date"], ["squares", "squares"]]
+        .forEach(function (f) { if (String(r[f[0]] == null ? "" : r[f[0]]).trim() === "") e.push("missing " + f[1]); });
+      var d = parseDate(r.installation_date);
+      if (r.installation_date !== "" && r.installation_date != null && !d) e.push("installation date not recognized (use MM/DD/YYYY)");
+      if (d && (d.y < 2000 || iso(d) > (t.y + 1) + "-" + pad(t.m) + "-" + pad(t.d))) e.push("installation date out of range");
+      r._date = d ? iso(d) : "";
+      var sq = r.squares === "" || r.squares == null ? null : Number(r.squares);
+      if (sq !== null && (isNaN(sq) || sq < 1 || sq > 200)) e.push("squares must be a number from 1 to 200");
+      else if (sq !== null && sq > 50) w.push("over 50 squares: priced by quote");
+      var st = String(r.state || "").trim().toUpperCase();
+      if (st && STATES.indexOf(st) < 0) e.push("state should be a two-letter code (e.g. IN)");
+      var key = norm(r.property_address);
+      if (key && seen[key]) e.push("same address appears twice in this submission");
+      else if (key && registered[key]) e.push("already registered (policy " + registered[key] + ")");
+      if (key) seen[key] = true;
+      if (month && d && iso(d).slice(0, 7) !== month) w.push("installed " + pretty(iso(d)) + ", outside the reporting month");
+      r._errors = e; r._warnings = w;
+    });
+  }
+  function renderRoofs() {
+    checkRoofs();
+    var ok = roofs.filter(function (r) { return !r._errors.length; });
+    var warn = ok.filter(function (r) { return r._warnings.length; }).length;
+    var bad = roofs.length - ok.length;
+    $("#roof-review").hidden = !roofs.length;
+    $("#rs1").className = "step " + (roofs.length ? "done" : "on");
+    $("#rs2").className = "step " + (roofs.length ? "on" : "");
+    $("#roof-summary").innerHTML = (sheetNote ? "<span class='badge b-warn'>" + esc(sheetNote) + "</span>" : "") +
+      "<span class='badge b-ok'>" + (ok.length - warn) + " ready</span><span class='badge b-warn'>" + warn + " to check</span>" +
+      "<span class='badge b-bad'>" + bad + " need a fix</span>";
+    $("#roof-rows").innerHTML = roofs.map(function (r, i) {
+      var status = r._errors.length ? "<span class='badge b-bad'>Needs a fix</span>" : r._warnings.length ? "<span class='badge b-warn'>Check</span>" : "<span class='badge b-ok'>Ready</span>";
+      var issues = r._errors.map(function (x) { return "<li class=e>" + esc(x) + "</li>"; }).concat(r._warnings.map(function (x) { return "<li class=w>" + esc(x) + "</li>"; })).join("");
+      return "<tr class='" + (r._errors.length ? "bad" : "") + "'><td>" + (r._row ? "Row " + r._row : "Added") + "</td><td>" + esc(r.property_address) +
+        "<div class=muted>" + esc([r.city, r.state, r.zip].filter(Boolean).join(" ")) + "</div></td><td>" + esc(r.homeowner_name) + "</td><td>" +
+        esc(r._date ? pretty(r._date) : r.installation_date) + "</td><td>" + esc(r.squares) + "</td><td style='white-space:nowrap'>" + esc(r.shingle_lot) + "</td><td>" + status +
+        (issues ? "<ul class=issues>" + issues + "</ul>" : "") + "</td><td><button class=x title='Remove' data-i='" + i + "'>&times;</button></td></tr>";
+    }).join("");
+    $("#roof-submit").disabled = !ok.length;
+    $("#roof-submit").textContent = ok.length ? "Submit " + ok.length + " roof" + (ok.length === 1 ? "" : "s") : "Submit roofs";
+  }
+  $("#roof-rows").addEventListener("click", function (e) { var b = e.target.closest(".x"); if (b) { roofs.splice(+b.dataset.i, 1); renderRoofs(); } });
+  $("#rmonth").addEventListener("change", function () { if (roofs.length) renderRoofs(); });
+
+  function loadRoofWorkbook(buf, name) {
+    var s = readSheet(buf, "Roof Submissions", ROOF_COLS);
+    sheetNote = "";
+    if (s.company && norm(s.company) !== norm(state.company)) sheetNote = "Sheet says " + s.company + "; you're signed in as " + state.company;
+    if (s.month && !$("#rmonth").value) $("#rmonth").value = s.month;
+    roofs = roofs.concat(s.rows);
+    renderRoofs();
+    return { rows: s.rows.length, company: s.company, month: s.month };
+  }
+  wireDrop("#roof-drop", "#roof-file", loadRoofWorkbook);
+  $("#roof-template").addEventListener("click", function () {
+    template("Roof Submissions", ROOF_HEAD, "ServiceGuard_Roof_Submission_" + state.company.replace(/\W+/g, "_") + ".xlsx", true);
+  });
+  $("#r-manual").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var f = e.target, rec = {};
+    ROOF_COLS.forEach(function (k) { rec[k] = (f.elements[k].value || "").trim(); });
+    roofs.push(rec); f.reset(); renderRoofs();
+  });
+  $("#roof-clear").addEventListener("click", function () { roofs = []; sheetNote = ""; renderRoofs(); });
+  $("#roof-submit").addEventListener("click", function () {
+    var ok = roofs.filter(function (r) { return !r._errors.length; });
+    if (!ok.length) return;
+    var month = $("#rmonth").value, label = month ? pretty(month + "-01").replace(/ 1,/, "") : "no reporting month";
+    var r = addActivity("Roof registration", ok.length + " roof" + (ok.length === 1 ? "" : "s") + ", " + label, "Under review");
+    var left = roofs.length - ok.length;
+    $("#roofs-done-text").textContent = ok.length + " roof" + (ok.length === 1 ? "" : "s") + " submitted for review" +
+      (left ? " (" + left + " left out because they need a fix)." : ".");
+    $("#roofs-ref").textContent = r;
+    $("#rs2").className = "step done"; $("#rs3").className = "step done";
+    $("#roofs-flow").hidden = true; $("#roofs-done").hidden = false;
+    roofs = []; sheetNote = "";
+  });
+  $("#roofs-again").addEventListener("click", function () {
+    $("#roofs-done").hidden = true; $("#roofs-flow").hidden = false; $("#rs3").className = "step"; renderRoofs();
+  });
+
+  // ===================== SUBMIT CLAIMS =====================
+  var CLAIM_COLS = ["property_address", "city", "state", "zip", "claimant_name", "claimant_email", "claimant_phone", "issue_type", "date_noticed", "claim_date"];
+  var CLAIM_HEAD = ["Property Address", "City", "State", "ZIP", "Claimant Name", "Claimant Email", "Claimant Phone", "Issue Type", "Date Noticed", "Claim Date"];
+  var claims = [];
+
+  function fillPolicySelect() {
+    $("#c-policy").innerHTML = "<option value=''>Choose a registered roof</option>" + state.policies.map(function (p) {
+      return "<option value='" + esc(p.policy) + "'>" + esc(p.address + ", " + p.city + " · " + p.homeowner + " · " + p.policy) + "</option>";
+    }).join("");
+  }
+  $("#c-policy").addEventListener("change", function () {
+    var p = state.policies.filter(function (x) { return x.policy === this.value; }, this)[0];
+    var name = $("#c-single").elements.claimant_name;
+    if (p && !name.value) name.value = p.homeowner;
+  });
+  $("#c-single").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var f = e.target, miss = [];
+    if (!f.elements.policy.value) miss.push("which roof");
+    if (!f.elements.claimant_name.value.trim()) miss.push("claimant name");
+    if (!f.elements.issue_type.value) miss.push("issue type");
+    if (!f.elements.description.value.trim()) miss.push("what's happening");
+    if (miss.length) { $("#c-error").textContent = "Please fill in: " + miss.join(", ") + "."; $("#c-error").hidden = false; return; }
+    $("#c-error").hidden = true;
+    var p = state.policies.filter(function (x) { return x.policy === f.elements.policy.value; })[0];
+    var r = addActivity("Claim", p.address + ": " + f.elements.issue_type.value, "Under review");
+    showClaimDone(r, "Claim for " + p.address + " (policy " + p.policy + ") received.");
+    f.reset();
+  });
+
+  // Same checks as the console's claims import: required fields, a matching
+  // roof under this company, no duplicate claim in the file.
+  function checkClaims() {
+    var seen = {};
+    claims.forEach(function (c) {
+      var e = [], w = [];
+      [["property_address", "property address"], ["claimant_name", "claimant name"], ["issue_type", "issue type"]]
+        .forEach(function (f) { if (String(c[f[0]] == null ? "" : c[f[0]]).trim() === "") e.push("missing " + f[1]); });
+      ["date_noticed", "claim_date"].forEach(function (k) { if (c[k] !== "" && c[k] != null && !parseDate(c[k])) e.push(k.replace("_", " ") + " not recognized"); });
+      var key = norm(c.property_address), hit = null;
+      if (key) state.policies.forEach(function (p) { var pk = norm(p.address); if (pk && (pk === key || key.indexOf(pk) === 0 || pk.indexOf(key) === 0)) hit = p; });
+      c._policy = hit ? hit.policy : "";
+      if (key && !hit) e.push("no roof registered under your company at this address");
+      var dk = key + "|" + norm(c.claimant_name);
+      if (key && seen[dk]) e.push("duplicate claim in this file");
+      seen[dk] = true;
+      c._errors = e; c._warnings = w;
+    });
+  }
+  function renderClaims() {
+    checkClaims();
+    var ok = claims.filter(function (c) { return !c._errors.length; }).length;
+    $("#claim-review").hidden = !claims.length;
+    $("#claim-summary").innerHTML = "<span class='badge b-ok'>" + ok + " ready</span><span class='badge b-bad'>" + (claims.length - ok) + " need a fix</span>";
+    $("#claim-rows").innerHTML = claims.map(function (c, i) {
+      var issues = c._errors.map(function (x) { return "<li class=e>" + esc(x) + "</li>"; }).join("");
+      return "<tr class='" + (c._errors.length ? "bad" : "") + "'><td>Row " + c._row + "</td><td>" + esc(c.property_address) + "</td><td>" + esc(c.claimant_name) +
+        "</td><td>" + esc(c.issue_type) + "</td><td>" + (c._policy ? esc(c._policy) : "&mdash;") + "</td><td>" +
+        (c._errors.length ? "<span class='badge b-bad'>Needs a fix</span><ul class=issues>" + issues + "</ul>" : "<span class='badge b-ok'>Ready</span>") +
+        "</td><td><button class=x title='Remove' data-i='" + i + "'>&times;</button></td></tr>";
+    }).join("");
+    $("#claim-submit").disabled = !ok;
+    $("#claim-submit").textContent = ok ? "Submit " + ok + " claim" + (ok === 1 ? "" : "s") : "Submit claims";
+  }
+  $("#claim-rows").addEventListener("click", function (e) { var b = e.target.closest(".x"); if (b) { claims.splice(+b.dataset.i, 1); renderClaims(); } });
+  function loadClaimWorkbook(buf) {
+    var s = readSheet(buf, "Claim Submissions", CLAIM_COLS);
+    claims = claims.concat(s.rows); renderClaims();
+    return { rows: s.rows.length, company: s.company };
+  }
+  wireDrop("#claim-drop", "#claim-file", loadClaimWorkbook);
+  $("#claim-template").addEventListener("click", function () {
+    template("Claim Submissions", CLAIM_HEAD, "ServiceGuard_Claims_" + state.company.replace(/\W+/g, "_") + ".xlsx", false);
+  });
+  $("#claim-clear").addEventListener("click", function () { claims = []; renderClaims(); });
+  $("#claim-submit").addEventListener("click", function () {
+    var ok = claims.filter(function (c) { return !c._errors.length; });
+    if (!ok.length) return;
+    var r = addActivity("Claim", ok.length + " claim" + (ok.length === 1 ? "" : "s") + " (uploaded sheet)", "Under review");
+    var left = claims.length - ok.length;
+    showClaimDone(r, ok.length + " claim" + (ok.length === 1 ? "" : "s") + " received" + (left ? "; " + left + " left out because they need a fix." : "."));
+    claims = []; renderClaims();
+  });
+  function showClaimDone(r, text) {
+    $("#claims-done-text").textContent = text; $("#claims-ref").textContent = r;
+    $("#claims-flow").hidden = true; $("#claims-done").hidden = false;
+  }
+  $("#claims-again").addEventListener("click", function () { $("#claims-done").hidden = true; $("#claims-flow").hidden = false; });
+
+  // Hooks for automated checks of the preview (no effect on normal use).
+  window.SGPortal = { loadRoofWorkbook: loadRoofWorkbook, loadClaimWorkbook: loadClaimWorkbook,
+                      roofs: function () { return roofs; }, claims: function () { return claims; } };
+  route();
+})();
+</script>
+</body>
+</html>
