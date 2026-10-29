@@ -144,6 +144,47 @@
   .payinfo { background: var(--paper); border-left: 3px solid var(--accent); padding: 14px 16px; margin: 0 0 18px; }
   .payinfo .amt { font-family: var(--head); font-size: 2rem; color: var(--ink); line-height: 1.1; }
 
+  /* registered roofs: 20 a page */
+  .pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+  .pager .pages { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pager button { min-width: 38px; min-height: 34px; padding: 0 10px; border: 1px solid var(--line); background: var(--white); font: inherit; font-size: 0.85rem; font-weight: 700; color: var(--navy); cursor: pointer; }
+  .pager button.on { background: var(--navy-deep); border-color: var(--navy-deep); color: var(--white); }
+  .pager button:disabled { color: var(--gray-400); cursor: default; }
+  /* converting a roofer's own sheet */
+  .mapbox { border: 1px solid var(--line); border-left: 3px solid var(--accent); background: #FBFCFE; padding: 18px 20px; margin: 18px 0 4px; }
+  .mapbox h3 { font-size: 1.3rem; }
+  .mapgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 16px; margin: 14px 0; }
+  .mapgrid label { font-size: 0.72rem; }
+  .mapgrid select.miss { border-color: var(--red); background: #FFF7F6; }
+  /* paying an invoice */
+  .paychoice { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 6px 0 18px; }
+  .payopt { text-align: left; border: 2px solid var(--line); background: var(--white); padding: 16px 18px; cursor: pointer; font: inherit; color: inherit; display: flex; gap: 14px; align-items: flex-start; transition: var(--transition); }
+  .payopt:hover { border-color: var(--accent-light); }
+  .payopt.on { border-color: var(--accent); background: #F3F7FC; }
+  .payopt svg { width: 26px; height: 26px; stroke: var(--accent); flex-shrink: 0; margin-top: 2px; }
+  .payopt b { display: block; color: var(--ink); font-size: 1.02rem; }
+  .payopt span { color: var(--gray-500); font-size: 0.88rem; }
+  .paymethods { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 14px; }
+  .paymethods span { border: 1px solid var(--line); padding: 4px 10px; font-size: 0.8rem; font-weight: 700; color: var(--gray-600); background: var(--white); }
+  .btn.pay { min-height: 54px; font-size: 0.9rem; width: 100%; max-width: 420px; }
+  .secure { display: flex; align-items: center; gap: 6px; color: var(--gray-500); font-size: 0.84rem; margin-top: 10px; }
+  .secure svg { width: 14px; height: 14px; stroke: currentColor; }
+  .testmode { display: inline-block; background: var(--amber-bg); color: var(--amber); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; margin-left: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+  /* claims: find a roof by typing */
+  .combo { position: relative; }
+  .combo-list { position: absolute; z-index: 20; left: 0; right: 0; top: 100%; background: var(--white); border: 1px solid var(--accent); border-top: 0; max-height: 320px; overflow-y: auto; box-shadow: 0 12px 26px rgba(15,32,56,0.14); }
+  .combo-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--line); line-height: 1.35; }
+  .combo-item:last-child { border-bottom: 0; }
+  .combo-item b { color: var(--ink); }
+  .combo-item .muted { font-size: 0.82rem; }
+  .combo-item.on, .combo-item:hover { background: #EEF4FB; }
+  .combo-empty { padding: 12px; color: var(--gray-500); font-size: 0.9rem; }
+  .picked { display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 1px solid var(--accent); background: #F3F7FC; padding: 10px 14px; }
+  .picked b { color: var(--ink); }
+  .money { position: relative; }
+  .money::before { content: "$"; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gray-500); }
+  .money input { padding-left: 24px; }
+
   footer { background: var(--footer-bg); color: rgba(255,255,255,0.55); font-size: 0.85rem; }
   footer div { max-width: 1280px; margin: 0 auto; padding: 22px 40px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
   footer a { color: rgba(255,255,255,0.75); }
@@ -155,15 +196,16 @@
     .actions { grid-template-columns: 1fr; }
     .stats { gap: 8px; }
     .stat { padding: 10px 10px; } .stat .n { font-size: 1.5rem; } .stat .l { font-size: 0.75rem; line-height: 1.3; }
-    .g3, .g4 { grid-template-columns: repeat(2, 1fr); }
+    .g3, .g4, .mapgrid { grid-template-columns: repeat(2, 1fr); }
     .span3 { grid-column: 1 / -1; }
+    .paychoice { grid-template-columns: 1fr; }
     .nav-right a.navlink { display: none; }
   }
   @media (max-width: 600px) {
     .nav-inner, .waking div, main, footer div { padding-left: 16px; padding-right: 16px; }
     .nav-inner { height: auto; min-height: 68px; padding-top: 8px; padding-bottom: 8px; flex-wrap: wrap; }
     .co-logo { height: 40px; max-width: 130px; }
-    .g2, .g3, .g4 { grid-template-columns: 1fr; }
+    .g2, .g3, .g4, .mapgrid { grid-template-columns: 1fr; }
     .span2, .span3 { grid-column: auto; }
     .card { padding: 20px 18px; }
     .search { max-width: none; }
@@ -196,7 +238,7 @@
     <p>Your home base for the Service Guard warranty program.</p>
     <ul>
       <li>Register the roofs you install each month: upload your submission sheet or add them one at a time.</li>
-      <li>See your invoices and what you owe, and tell us when you've paid.</li>
+      <li>See your invoices and what you owe, and pay online by card or bank account.</li>
       <li>Submit warranty claims for your customers and see where each one stands.</li>
     </ul>
   </div>
@@ -260,13 +302,13 @@
       <a class="action" href="#roofs">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M12 13v5M9.5 15.5h5"/></svg></div>
         <h3>Register roofs</h3>
-        <p class="muted">Upload this month's submission sheet or add roofs one by one. Each roof is checked before you submit.</p>
+        <p class="muted">Upload this month's roofs, in our sheet or straight from ServiceTitan, or add them one by one. Each roof is checked before you submit.</p>
         <span class="go">Start registration &rarr;</span>
       </a>
       <a class="action" href="#pay">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="1"/><path d="M2.5 10h19M6 15h4"/></svg></div>
         <h3>Pay invoice</h3>
-        <p class="muted">See what's due, download invoices, and tell us when you've sent a payment.</p>
+        <p class="muted">See what's due, download invoices, and pay online by card or bank account (ACH).</p>
         <span class="go">View invoices &rarr;</span>
       </a>
       <a class="action" href="#claims">
@@ -310,6 +352,10 @@
         <thead><tr><th>Policy #</th><th>Address</th><th>Homeowner</th><th>Installed</th><th class="num">Squares</th><th>Status</th></tr></thead>
         <tbody id="policies"></tbody>
       </table></div>
+      <div class="pager" id="roof-pager" hidden>
+        <span class="muted" id="roof-showing"></span>
+        <div class="pages" id="roof-pages"></div>
+      </div>
     </div>
   </section>
 
@@ -333,11 +379,24 @@
 
       <div id="r-upload">
         <div class="drop" id="roof-drop" tabindex="0">
-          <p><b>Drop your roof submission sheet here</b> or click to choose a file (.xlsx)</p>
-          <p class="muted">Same sheet you send us today: company in cell C4, reporting month in C5, roofs from row 8.</p>
-          <input type="file" id="roof-file" accept=".xlsx" hidden>
+          <p><b>Drop your roofs here</b> or click to choose a file (.xlsx, .xls or .csv)</p>
+          <p class="muted">Our submission sheet, or your own export as it comes out of ServiceTitan, JobNimbus, AccuLynx or a spreadsheet.
+            We match your columns for you; no reformatting needed.</p>
+          <input type="file" id="roof-file" accept=".xlsx,.xls,.csv" hidden>
         </div>
-        <p style="margin-top:10px"><button class="btn ghost small" id="roof-template" type="button">Download a blank sheet</button></p>
+        <p style="margin-top:10px"><button class="btn ghost small" id="roof-template" type="button">Download a blank Service Guard sheet</button></p>
+        <div class="mapbox" id="roof-map" hidden>
+          <div class="rowbar" style="margin:0"><h3>Your columns</h3><span class="summary" id="map-how"></span></div>
+          <p class="muted" id="map-intro"></p>
+          <div class="note" id="map-missing" hidden style="margin:12px 0 0"></div>
+          <div class="mapgrid" id="map-fields"></div>
+          <label style="display:flex;gap:8px;align-items:center;text-transform:none;letter-spacing:0;font-weight:600;font-size:0.9rem">
+            <input type="checkbox" id="map-sqft" style="width:auto"> Roof size in this file is in square feet (we divide by 100 to get squares)</label>
+          <div class="rowbtns" style="margin-top:14px">
+            <button class="btn small" id="map-apply" type="button">Use these columns</button>
+            <button class="btn ghost small" id="map-download" type="button">Download as a Service Guard sheet</button>
+          </div>
+        </div>
       </div>
 
       <form id="r-manual" hidden novalidate>
@@ -364,8 +423,8 @@
           <thead><tr><th>#</th><th>Property</th><th>Homeowner</th><th>Installed</th><th class="num">Squares</th><th>Lot #</th><th>Check</th><th></th></tr></thead>
           <tbody id="roof-rows"></tbody>
         </table></div>
-        <p class="muted" style="margin-top:10px">Rows marked <span class="badge b-bad">Needs a fix</span> won't be submitted; fix them in your sheet and upload again,
-          or remove them. <span class="badge b-warn">Check</span> rows are submitted, and we'll take a second look.</p>
+        <p class="muted" style="margin-top:10px">Rows marked <span class="badge b-bad">Needs a fix</span> won't be submitted: click <b>Edit</b> to fix one here,
+          fix them in your file and upload again, or remove them. <span class="badge b-warn">Check</span> rows are submitted, and we'll take a second look.</p>
         <div class="error" id="roof-error" hidden style="margin-top:12px"></div>
         <div class="rowbar">
           <button class="btn ghost" id="roof-clear" type="button">Start over</button>
@@ -388,34 +447,57 @@
     <a class="back" href="#home">&larr; Portal home</a>
     <div class="card" id="pay-flow">
       <div class="eyebrow">Pay invoice</div>
-      <h2 style="font-size:2rem;margin-bottom:14px">Send a payment</h2>
+      <h2 style="font-size:2rem;margin-bottom:14px">Choose how you&rsquo;d like to pay</h2>
       <div id="pay-none" class="note" hidden>You're all paid up. Nothing is due right now.</div>
-      <form id="pay-form" novalidate>
+      <div id="pay-body">
         <div class="grid g2">
           <div class="span2"><label class="req" for="pay-inv">Invoice</label><select id="pay-inv"></select></div>
         </div>
         <div class="payinfo" id="pay-info" style="margin-top:16px"></div>
-        <p class="muted" style="margin-bottom:16px" id="pay-how"></p>
-        <h3 style="font-size:1.2rem;margin-bottom:10px">After you've sent it, tell us here</h3>
-        <div class="grid g4">
-          <div><label class="req" for="pay-amt">Amount sent</label><input id="pay-amt" inputmode="decimal"></div>
-          <div><label class="req" for="pay-method">How you paid</label>
-            <select id="pay-method"><option value="">Choose one</option><option>ACH</option><option>Check</option><option>Wire</option><option>Other</option></select></div>
-          <div><label class="req" for="pay-date">Date sent</label><input id="pay-date" type="date"></div>
-          <div><label for="pay-ref">Check # or reference</label><input id="pay-ref" maxlength="80"></div>
-          <div class="span4"><label for="pay-note">Note (optional)</label><input id="pay-note" maxlength="300"></div>
+
+        <div class="paychoice" role="radiogroup" aria-label="How you'd like to pay">
+          <button class="payopt on" type="button" data-pay="online" role="radio" aria-checked="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="1.5"/><path d="M2.5 10h19M6 15h4"/></svg>
+            <div><b>Pay online</b><span>Card or bank account (ACH). Secure checkout by Stripe.</span></div></button>
+          <button class="payopt" type="button" data-pay="offline" role="radio" aria-checked="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg>
+            <div><b>Check, wire or bank transfer</b><span>Send it from your bank, then tell us here so we can match it.</span></div></button>
         </div>
-        <div class="error" id="pay-error" hidden style="margin-top:14px"></div>
-        <p class="muted" style="margin-top:12px">We match it to your invoice when the payment arrives, usually within a few business days. Never enter card or bank account numbers here.</p>
-        <p style="margin-top:14px"><button class="btn green" type="submit">I've sent this payment</button></p>
-      </form>
+
+        <div id="pay-online">
+          <div class="paymethods" id="pay-methods"><span>Visa</span><span>Mastercard</span><span>Amex</span><span>Discover</span><span>Apple Pay</span><span>Google Pay</span><span>Bank account (ACH)</span></div>
+          <p class="muted" style="margin-bottom:14px">Cards are paid right away. Bank account (ACH) payments take 3&ndash;5 business days to clear.
+            Coverage on this invoice's roofs starts once it's paid in full.</p>
+          <div class="note" id="pay-online-off" hidden>Online payment is being set up. For now, choose <b>Check, wire or bank transfer</b>.</div>
+          <div class="error" id="pay-online-error" hidden></div>
+          <button class="btn green pay" id="pay-stripe" type="button">Pay securely</button>
+          <div class="secure"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            You'll finish on Stripe's secure checkout page, then come right back here. Service Guard never sees your card or bank details.</div>
+        </div>
+
+        <form id="pay-form" novalidate hidden>
+          <p class="muted" style="margin-bottom:16px" id="pay-how"></p>
+          <h3 style="font-size:1.2rem;margin-bottom:10px">After you've sent it, tell us here</h3>
+          <div class="grid g4">
+            <div><label class="req" for="pay-amt">Amount sent</label><input id="pay-amt" inputmode="decimal"></div>
+            <div><label class="req" for="pay-method">How you paid</label>
+              <select id="pay-method"><option value="">Choose one</option><option>ACH</option><option>Check</option><option>Wire</option><option>Other</option></select></div>
+            <div><label class="req" for="pay-date">Date sent</label><input id="pay-date" type="date"></div>
+            <div><label for="pay-ref">Check # or reference</label><input id="pay-ref" maxlength="80"></div>
+            <div class="span4"><label for="pay-note">Note (optional)</label><input id="pay-note" maxlength="300"></div>
+          </div>
+          <div class="error" id="pay-error" hidden style="margin-top:14px"></div>
+          <p class="muted" style="margin-top:12px">We match it to your invoice when the payment arrives, usually within a few business days. Never enter card or bank account numbers here.</p>
+          <p style="margin-top:14px"><button class="btn green" type="submit">I've sent this payment</button></p>
+        </form>
+      </div>
     </div>
     <div class="card confirm" id="pay-done" hidden>
       <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
-      <h2>Thanks, we're on it</h2>
+      <h2 id="pay-done-title">Thanks, we're on it</h2>
       <p class="muted" id="pay-done-text"></p>
       <div class="ref" id="pay-ref-out"></div>
-      <p class="muted">Your balance updates once we confirm the payment arrived. Paying an invoice in full starts coverage on its roofs.</p>
+      <p class="muted" id="pay-done-more">Your balance updates once we confirm the payment arrived. Paying an invoice in full starts coverage on its roofs.</p>
       <p style="margin-top:20px"><a class="btn" href="#home">Back to portal home</a></p>
     </div>
   </section>
@@ -432,21 +514,33 @@
       </div>
 
       <form id="c-single" novalidate>
+        <p class="muted" style="margin-bottom:14px">Every question is required.</p>
         <div class="grid g4">
-          <div class="span4"><label class="req" for="c-policy">Which roof?</label>
-            <select id="c-policy" name="policy"></select>
+          <div class="span4"><label class="req" for="c-roof-q">Which roof?</label>
+            <div class="combo" id="c-roof-combo">
+              <input id="c-roof-q" autocomplete="off" spellcheck="false" placeholder="Start typing the address, homeowner or policy #"
+                     role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="c-roof-list">
+              <div class="combo-list" id="c-roof-list" role="listbox" hidden></div>
+            </div>
+            <div class="picked" id="c-roof-picked" hidden></div>
+            <input type="hidden" name="policy" id="c-policy">
             <p class="muted" style="margin-top:4px">Only roofs registered under your company are listed.</p></div>
           <div class="span2"><label class="req">Homeowner / claimant name</label><input name="claimant_name"></div>
-          <div><label>Claimant email</label><input name="claimant_email" type="email"></div>
-          <div><label>Claimant phone</label><input name="claimant_phone"></div>
+          <div><label class="req">Claimant email</label><input name="claimant_email" type="email"></div>
+          <div><label class="req">Claimant phone</label><input name="claimant_phone" type="tel"></div>
           <div class="span2"><label class="req">Issue type</label>
             <select name="issue_type">
               <option value="">Choose one</option><option>Roof leak</option><option>Wind damage / missing shingles</option>
               <option>Flashing failure</option><option>Granule loss / blistering</option><option>Improper installation</option><option>Other</option>
             </select></div>
-          <div><label>Date first noticed</label><input name="date_noticed" type="date"></div>
-          <div><label>Recent severe weather?</label><select name="severe_weather"><option value="">Not sure</option><option>Yes</option><option>No</option></select></div>
-          <div class="span4"><label class="req">What's happening?</label><textarea name="description" rows="4" maxlength="5000" placeholder="Where is the problem, when did it start, and what have you seen?"></textarea></div>
+          <div><label class="req">Claim date</label><input name="claim_date" type="date"></div>
+          <div><label class="req">Date first noticed</label><input name="date_noticed" type="date"></div>
+          <div class="span2"><label class="req">Recent severe weather?</label><select name="severe_weather"><option value="">Choose one</option><option>Yes</option><option>No</option><option>Not sure</option></select></div>
+          <div class="span2"><label class="req" for="c-cost">Roofer cost to repair</label>
+            <div class="money"><input id="c-cost" name="repair_cost" inputmode="decimal" placeholder="0.00"></div></div>
+          <div class="span4"><label class="req">Please provide a short explanation of the issue</label><textarea name="description" rows="3" maxlength="5000"></textarea></div>
+          <div class="span4"><label class="req">Materials used for repair</label><textarea name="repair_materials" rows="4" maxlength="5000"
+            placeholder="What materials were used to remediate the roof? (Please be specific; e.g. two asphalt shingle, one box of nails, one unit of underlayment, etc.)"></textarea></div>
         </div>
         <div class="error" id="c-error" hidden style="margin-top:14px"></div>
         <p style="margin-top:14px"><button class="btn green" type="submit">Submit claim</button></p>
@@ -455,7 +549,8 @@
       <div id="c-upload" hidden>
         <div class="drop" id="claim-drop" tabindex="0">
           <p><b>Drop your claims sheet here</b> or click to choose a file (.xlsx)</p>
-          <p class="muted">Company in cell C4, claims from row 8. Each claim is matched to one of your registered roofs by address.</p>
+          <p class="muted">Company in cell C4, claims from row 8. Each claim is matched to one of your registered roofs by address,
+            and needs the claimant's email and phone, the date noticed, your repair cost and the materials used.</p>
           <input type="file" id="claim-file" accept=".xlsx" hidden>
         </div>
         <p style="margin-top:10px"><button class="btn ghost small" id="claim-template" type="button">Download a blank claims sheet</button></p>
@@ -588,7 +683,7 @@
   $("#signout").addEventListener("click", function () { signedOut("You've signed out."); });
   function signedOut(note) {
     setToken(null); me = null; location.hash = "";
-    roofs = []; claims = [];
+    roofs = []; claims = []; conv = null; $("#roof-map").hidden = true;
     applyBrand(null);
     $("#app").hidden = true; $("#who").hidden = true; $("#view-login").hidden = false;
     if (note) show($("#login-note"), note);
@@ -599,6 +694,7 @@
     return call("GET", "/me").then(function (res) {
       if (!res.j.ok) return;
       me = res.j; applyBrand(me.company); route();
+      if (returningCheckout && !me.user.must_change) { var sid = returningCheckout; returningCheckout = null; finishCheckout(sid); }
     });
   }
 
@@ -632,7 +728,7 @@
     if (view === "home") renderHome();
     // Opening a flow always starts fresh (not on the last confirmation screen).
     if (view === "roofs") { $("#roofs-done").hidden = true; $("#roofs-flow").hidden = false; $("#rs3").className = "step"; renderRoofs(); }
-    if (view === "claims") { $("#claims-done").hidden = true; $("#claims-flow").hidden = false; fillPolicySelect(); }
+    if (view === "claims") { $("#claims-done").hidden = true; $("#claims-flow").hidden = false; if (!$("#c-policy").value) resetRoofPicker(); }
     if (view === "pay") openPay(h.split("-")[1]);
     if (view === "password") openPassword();
     window.scrollTo(0, 0);
@@ -663,7 +759,7 @@
   });
 
   // ----- home -----
-  var roofQuery = "";
+  var roofQuery = "", roofPage = 1, ROOFS_PER_PAGE = 20;
   function renderHome() {
     $("#co-name").textContent = me.company.name; $("#co-partner").textContent = me.company.partner_number;
     $("#st-policies").textContent = me.stats.roofs; $("#st-pending").textContent = me.stats.pending; $("#st-claims").textContent = me.stats.open_claims;
@@ -709,13 +805,37 @@
       return words.every(function (w) { return hay.indexOf(w) >= 0; });
     });
     $("#roof-count").textContent = words.length ? "(" + list.length + " of " + me.roofs.length + ")" : "(" + me.roofs.length + ")";
-    $("#policies").innerHTML = list.slice(0, 300).map(function (p) {
+    var pages = Math.max(1, Math.ceil(list.length / ROOFS_PER_PAGE));
+    roofPage = Math.min(Math.max(1, roofPage), pages);
+    var start = (roofPage - 1) * ROOFS_PER_PAGE;
+    renderPager(list.length, pages, start);
+    $("#policies").innerHTML = list.slice(start, start + ROOFS_PER_PAGE).map(function (p) {
       return "<tr><td style='white-space:nowrap'>" + esc(p.policy_number) + "</td><td>" + esc(p.property_address) +
         "<div class=muted>" + esc([p.city, p.state, p.zip].filter(Boolean).join(" ")) + "</div></td><td>" + esc(p.homeowner_name) +
         "</td><td style='white-space:nowrap'>" + esc(pretty(p.installation_date)) + "</td><td class=num>" + esc(p.squares) + "</td><td>" + badge(p.status) + "</td></tr>";
     }).join("") || "<tr><td colspan=6 class=muted>" + (me.roofs.length ? "No roofs match your search." : "No roofs registered yet.") + "</td></tr>";
   }
-  $("#roof-search").addEventListener("input", function () { roofQuery = this.value; renderPolicies(); });
+  function renderPager(total, pages, start) {
+    $("#roof-pager").hidden = total <= ROOFS_PER_PAGE;
+    if (total <= ROOFS_PER_PAGE) return;
+    $("#roof-showing").textContent = "Showing " + (start + 1) + "–" + Math.min(start + ROOFS_PER_PAGE, total) + " of " + total;
+    var nums = [], last = 0;
+    for (var n = 1; n <= pages; n++) {
+      if (n === 1 || n === pages || Math.abs(n - roofPage) <= 2) {
+        if (n - last > 1) nums.push("<button type=button disabled>&hellip;</button>");
+        nums.push("<button type=button data-page='" + n + "'" + (n === roofPage ? " class=on aria-current=page" : "") + ">" + n + "</button>");
+        last = n;
+      }
+    }
+    $("#roof-pages").innerHTML = "<button type=button data-page='" + (roofPage - 1) + "'" + (roofPage === 1 ? " disabled" : "") + ">&larr; Prev</button>" +
+      nums.join("") + "<button type=button data-page='" + (roofPage + 1) + "'" + (roofPage === pages ? " disabled" : "") + ">Next &rarr;</button>";
+  }
+  $("#roof-pages").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-page]"); if (!b || b.disabled) return;
+    roofPage = +b.dataset.page; renderPolicies();
+    $("#registered").scrollIntoView({ block: "start" });
+  });
+  $("#roof-search").addEventListener("input", function () { roofQuery = this.value; roofPage = 1; renderPolicies(); });
   $("#inv-rows").addEventListener("click", function (e) {
     var b = e.target.closest("[data-pdf]"); if (!b) return;
     b.disabled = true;
@@ -739,7 +859,7 @@
 
   // ----- spreadsheet reading / templates -----
   function readSheet(buf, wanted, cols) {
-    var wb = XLSX.read(buf, { type: "array" });
+    var wb = buf.SheetNames ? buf : XLSX.read(buf, { type: "array" });
     var ws = wb.Sheets[wanted] || wb.Sheets[wb.SheetNames[0]];
     var cell = function (a) { var c = ws[a]; return c ? c.v : ""; };
     var range = XLSX.utils.decode_range(ws["!ref"] || "A1:A1"), rows = [];
@@ -751,21 +871,44 @@
     }
     return { company: String(cell("C4") || "").trim(), month: parseMonth(cell("C5")), rows: rows };
   }
-  function template(sheetName, headers, file, withMonth) {
+  // The sheet as rows of plain values, dates as YYYY-MM-DD (for the console's converter).
+  function sheetGrid(ws) {
+    var range = XLSX.utils.decode_range(ws["!ref"] || "A1:A1"), grid = [];
+    var lastRow = Math.min(range.e.r, 560), lastCol = Math.min(range.e.c, 79);
+    for (var r = 0; r <= lastRow; r++) {
+      var row = [];
+      for (var c = 0; c <= lastCol; c++) {
+        var cell = ws[XLSX.utils.encode_cell({ r: r, c: c })], v = "";
+        if (cell) {
+          if (cell.t === "d" && cell.v instanceof Date) v = cell.v.getFullYear() + "-" + pad(cell.v.getMonth() + 1) + "-" + pad(cell.v.getDate());
+          else if (cell.t === "n" && cell.z && XLSX.SSF.is_date(cell.z)) { var d = XLSX.SSF.parse_date_code(cell.v); v = d ? d.y + "-" + pad(d.m) + "-" + pad(d.d) : cell.v; }
+          else if (cell.t === "n") v = cell.v;
+          else if (cell.t === "b") v = cell.v ? "TRUE" : "FALSE";
+          else v = cell.w != null && cell.t !== "s" ? cell.w : (cell.v == null ? "" : String(cell.v));
+        }
+        row.push(v);
+      }
+      grid.push(row);
+    }
+    while (grid.length && grid[grid.length - 1].every(function (v) { return v === ""; })) grid.pop();
+    return grid;
+  }
+  function template(sheetName, headers, file, withMonth, dataRows, month) {
     var aoa = [[], [], [], ["Roofing Company:", "", me.company.name]];
-    aoa.push(withMonth ? ["Reporting Month:", "", ""] : []);
+    aoa.push(withMonth ? ["Reporting Month:", "", month || ""] : []);
     aoa.push([]); aoa.push(headers);
-    aoa.push(headers.map(function (h, i) { return i === 0 ? "EXAMPLE - delete this row" : ""; }));
+    if (dataRows) dataRows.forEach(function (r) { aoa.push(r); });
+    else aoa.push(headers.map(function (h, i) { return i === 0 ? "EXAMPLE - delete this row" : ""; }));
     var ws = XLSX.utils.aoa_to_sheet(aoa); ws["!cols"] = headers.map(function () { return { wch: 20 }; });
     var wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, sheetName); XLSX.writeFile(wb, file);
   }
-  function wireDrop(dropSel, inputSel, onBuffer) {
+  function wireDrop(dropSel, inputSel, onBuffer, anyFile) {
     var drop = $(dropSel), input = $(inputSel);
     var take = function (f) {
       if (!f) return;
-      if (!/\.xlsx$/i.test(f.name)) { alert("Please choose an .xlsx file."); return; }
+      if (!(anyFile ? /\.(xlsx|xlsm|xls|csv)$/i : /\.xlsx$/i).test(f.name)) { alert(anyFile ? "Please choose a spreadsheet: .xlsx, .xls or .csv." : "Please choose an .xlsx file."); return; }
       var r = new FileReader(); r.onload = function () {
-        try { onBuffer(new Uint8Array(r.result), f.name); } catch (e) { alert("Couldn't read that file. Is it a real .xlsx workbook?"); }
+        try { onBuffer(new Uint8Array(r.result), f.name); } catch (e) { alert("Couldn't read that file. Is it a real spreadsheet?"); }
       }; r.readAsArrayBuffer(f);
     };
     drop.addEventListener("click", function () { input.click(); });
@@ -824,17 +967,97 @@
       return "<tr class='" + (v.status === "fix" ? "bad" : "") + "'><td style='white-space:nowrap'>" + (r.sheet_row ? "Row " + r.sheet_row : "Added") + "</td><td>" + esc(r.property_address) +
         "<div class=muted>" + esc([r.city, r.state, r.zip].filter(Boolean).join(" ")) + "</div></td><td>" + esc(r.homeowner_name) + "</td><td style='white-space:nowrap'>" +
         esc(d ? pretty(iso(d)) : r.installation_date) + "</td><td class=num>" + esc(r.squares) + "</td><td style='white-space:nowrap'>" + esc(r.shingle_lot) + "</td><td>" + status +
-        (issues ? "<ul class=issues>" + issues + "</ul>" : "") + "</td><td><button class=x title='Remove' type=button data-i='" + i + "'>&times;</button></td></tr>";
+        (issues ? "<ul class=issues>" + issues + "</ul>" : "") + "</td><td><div class=rowbtns style='flex-wrap:nowrap'><button class='btn ghost small' type=button data-edit='" + i + "'>Edit</button>" +
+        "<button class=x title='Remove' type=button data-i='" + i + "'>&times;</button></div></td></tr>";
     }).join("");
     var n = roofChecking ? 0 : ok.length;
     $("#roof-submit").disabled = !n;
     $("#roof-submit").textContent = n ? "Submit " + plural(n, "roof") : "Submit roofs";
   }
-  $("#roof-rows").addEventListener("click", function (e) { var b = e.target.closest(".x"); if (b) { roofs.splice(+b.dataset.i, 1); checkRoofs(); } });
+  $("#roof-rows").addEventListener("click", function (e) {
+    var b = e.target.closest(".x");
+    if (b) { roofs.splice(+b.dataset.i, 1); checkRoofs(); return; }
+    var ed = e.target.closest("[data-edit]"); if (!ed) return;
+    // Fix one roof here: it moves into the one-at-a-time form, then back into the list.
+    var r = roofs.splice(+ed.dataset.edit, 1)[0], f = $("#r-manual");
+    if (conv && conv.rows.indexOf(r) >= 0) { conv.rows = conv.rows.filter(function (x) { return x !== r; }); conv.edited.push(r.sheet_row); }
+    document.querySelector("[data-tab='r-manual']").click();
+    ROOF_COLS.forEach(function (k) { f.elements[k].value = k === "installation_date" ? (dateOut(r[k]) || "") : (r[k] == null ? "" : r[k]); });
+    checkRoofs();
+    f.scrollIntoView({ block: "center" });
+    var miss = ["property_address", "homeowner_name", "installation_date", "squares"].filter(function (k) { return !String(f.elements[k].value).trim(); })[0];
+    f.elements[miss || "property_address"].focus();
+  });
   $("#rmonth").addEventListener("change", function () { if (roofs.length) checkRoofs(); });
 
+  // ----- a roofer's own export (ServiceTitan etc.): the console matches its columns -----
+  var conv = null;   // {grid, name, res, rows}: the file being converted and the roofs it added
+  function isTemplate(ws) {
+    var v = function (a) { var c = ws[a]; return c ? norm(c.v) : ""; };
+    return v("A7") === "propertyaddress" && v("B7") === "city";
+  }
+  function convertSheet(grid, name, mapping) {
+    show($("#roof-error"), "");
+    $("#map-how").innerHTML = "<span class='badge b-info'>Reading your columns&hellip;</span>";
+    return call("POST", "/roofs/convert", { grid: grid, filename: name, mapping: mapping || null }).then(function (res) {
+      if (!res.j.ok) { $("#roof-map").hidden = true; show($("#roof-error"), res.j.error); $("#roof-review").hidden = false; return; }
+      var edited = conv && conv.grid === grid ? conv.edited : [];   // rows already fixed by hand stay as fixed
+      if (conv) roofs = roofs.filter(function (r) { return conv.rows.indexOf(r) < 0; });
+      conv = { grid: grid, name: name, res: res.j, edited: edited,
+               rows: res.j.rows.filter(function (r) { return edited.indexOf(r.sheet_row) < 0; }) };
+      roofs = roofs.concat(conv.rows);
+      if (!$("#rmonth").value) {          // the month most of these roofs were installed
+        var count = {}, best = "";
+        conv.rows.forEach(function (r) { var m = String(r.installation_date || "").slice(0, 7); if (/^\d{4}-\d{2}$/.test(m)) count[m] = (count[m] || 0) + 1; });
+        Object.keys(count).forEach(function (m) { if (!best || count[m] > count[best]) best = m; });
+        if (best) $("#rmonth").value = best;
+      }
+      renderMap(); checkRoofs();
+    });
+  }
+  function renderMap() {
+    var j = conv.res, m = j.mapping, colName = function (i) { return XLSX.utils.encode_col(i); };
+    $("#roof-map").hidden = false;
+    $("#map-how").innerHTML = j.how === "claude" ? "<span class='badge b-info'>Matched with Claude</span>"
+      : j.how === "yours" ? "<span class='badge b-ok'>Your choices</span>" : "<span class='badge b-ok'>Matched automatically</span>";
+    $("#map-intro").innerHTML = "We read <b>" + esc(conv.name) + "</b>: column names on row " + (j.header_row + 1) + ", " + plural(j.rows.length, "roof") +
+      ". Check that each Service Guard field points at the right column in your file, then review the roofs below.";
+    var labels = {}; j.fields.forEach(function (f) { labels[f.key] = f.label; });
+    $("#map-missing").hidden = !j.missing.length;
+    $("#map-missing").innerHTML = j.missing.length ? "We couldn't find <b>" + esc(j.missing.map(function (k) { return labels[k]; }).join(", ")) +
+      "</b> in your file. Pick the column below, or add it to each roof with <b>Edit</b>." : "";
+    $("#map-fields").innerHTML = j.fields.map(function (f) {
+      var opts = "<option value=''>Not in my file</option>" + j.headers.map(function (h, i) {
+        return h ? "<option value='" + i + "'" + (m[f.key] === i ? " selected" : "") + ">Column " + colName(i) + ": " + esc(h) + "</option>" : "";
+      }).join("");
+      return "<div><label" + (f.required ? " class=req" : "") + ">" + esc(f.label) + "</label><select data-field='" + f.key + "'" +
+        (j.missing.indexOf(f.key) >= 0 ? " class=miss" : "") + ">" + opts + "</select></div>";
+    }).join("");
+    $("#map-sqft").checked = m.squares_unit === "sqft";
+  }
+  $("#map-apply").addEventListener("click", function () {
+    if (!conv) return;
+    var mapping = { header_row: conv.res.header_row };
+    $$("#map-fields select").forEach(function (sel) { if (sel.value !== "") mapping[sel.dataset.field] = +sel.value; });
+    if ($("#map-sqft").checked) mapping.squares_unit = "sqft";
+    convertSheet(conv.grid, conv.name, mapping);
+  });
+  $("#map-download").addEventListener("click", function () {
+    if (!conv) return;
+    var rows = roofs.map(function (r) { return ROOF_COLS.map(function (k) { return k === "installation_date" ? dateOut(r[k]) : (r[k] == null ? "" : r[k]); }); });
+    template("Roof Submissions", ROOF_HEAD, "ServiceGuard_Roof_Submission_" + me.company.name.replace(/\W+/g, "_") + ".xlsx", true, rows, $("#rmonth").value);
+  });
+
   function loadRoofWorkbook(buf, name) {
-    var s = readSheet(buf, "Roof Submissions", ROOF_COLS);
+    var wb = XLSX.read(buf, { type: "array" });
+    var ws = wb.Sheets["Roof Submissions"] || wb.Sheets[wb.SheetNames[0]];
+    if (!isTemplate(ws)) {
+      var grid = sheetGrid(ws);
+      if (!grid.length) { alert("That file is empty."); return; }
+      convertSheet(grid, name || "your file");
+      return { converted: true };
+    }
+    var s = readSheet(wb, "Roof Submissions", ROOF_COLS);
     sheetNote = ""; sheetName = name || null;
     if (s.company && norm(s.company) !== norm(me.company.name)) sheetNote = "Sheet says " + s.company + "; you're signed in as " + me.company.name;
     if (s.month && !$("#rmonth").value) $("#rmonth").value = s.month;
@@ -843,7 +1066,7 @@
     checkRoofs();
     return { rows: s.rows.length, company: s.company, month: s.month };
   }
-  wireDrop("#roof-drop", "#roof-file", loadRoofWorkbook);
+  wireDrop("#roof-drop", "#roof-file", loadRoofWorkbook, true);
   $("#roof-template").addEventListener("click", function () {
     template("Roof Submissions", ROOF_HEAD, "ServiceGuard_Roof_Submission_" + me.company.name.replace(/\W+/g, "_") + ".xlsx", true);
   });
@@ -854,14 +1077,14 @@
     if (!rec.property_address) { alert("Enter the property address."); return; }
     roofs.push(rec); f.reset(); checkRoofs();
   });
-  $("#roof-clear").addEventListener("click", function () { roofs = []; sheetNote = ""; sheetName = null; roofSeq++; roofChecking = false; show($("#roof-error"), ""); renderRoofs(); });
+  $("#roof-clear").addEventListener("click", function () { roofs = []; sheetNote = ""; sheetName = null; conv = null; $("#roof-map").hidden = true; roofSeq++; roofChecking = false; show($("#roof-error"), ""); renderRoofs(); });
   $("#roof-submit").addEventListener("click", function () {
     var month = $("#rmonth").value;
     if (!month) { show($("#roof-error"), "Choose the reporting month at the top."); $("#rmonth").focus(); return; }
     var ok = roofs.filter(function (r) { var s = verdict(r).status; return s === "ready" || s === "check"; });
     if (!ok.length) return;
     var btn = $("#roof-submit"); btn.disabled = true;
-    call("POST", "/roofs", { report_month: month, filename: sheetName, rows: roofPayload(ok) }).then(function (res) {
+    call("POST", "/roofs", { report_month: month, filename: sheetName || (conv && conv.name), rows: roofPayload(ok) }).then(function (res) {
       btn.disabled = false;
       if (!res.j.ok) {
         show($("#roof-error"), res.j.error);
@@ -873,7 +1096,7 @@
       $("#roofs-ref").textContent = res.j.reference;
       $("#rs2").className = "step done"; $("#rs3").className = "step done";
       $("#roofs-flow").hidden = true; $("#roofs-done").hidden = false;
-      roofs = []; sheetNote = ""; sheetName = null; show($("#roof-error"), "");
+      roofs = []; sheetNote = ""; sheetName = null; conv = null; $("#roof-map").hidden = true; show($("#roof-error"), "");
     });
   });
   $("#roofs-again").addEventListener("click", function () {
@@ -881,32 +1104,81 @@
   });
 
   // ===================== PAY INVOICE =====================
+  var payMode = "online";
   function openPay(id) {
-    $("#pay-done").hidden = true; $("#pay-flow").hidden = false; show($("#pay-error"), "");
+    $("#pay-done").hidden = true; $("#pay-flow").hidden = false; show($("#pay-error"), ""); show($("#pay-online-error"), "");
     var open = me.invoices.filter(function (i) { return i.balance > 0.005; });
-    $("#pay-none").hidden = !!open.length; $("#pay-form").hidden = !open.length;
+    $("#pay-none").hidden = !!open.length; $("#pay-body").hidden = !open.length;
     if (!open.length) return;
     var pick = open.filter(function (i) { return String(i.id) === String(id); })[0] ||
                open.filter(function (i) { return !i.payment_pending; })[0] || open[0];
     $("#pay-inv").innerHTML = open.map(function (i) {
       return "<option value='" + esc(i.id) + "'" + (i === pick ? " selected" : "") + ">" + esc(i.invoice_no + " · " + i.period + " · " + money(i.balance) + " due" +
-        (i.payment_pending ? " · payment being confirmed" : "")) + "</option>";
+        (i.payment_pending ? " · payment on its way" : "")) + "</option>";
     }).join("");
     $("#pay-how").textContent = me.remit;
+    $("#pay-online-off").hidden = !!me.online_pay;
     $("#pay-method").value = ""; $("#pay-ref").value = ""; $("#pay-note").value = ""; $("#pay-date").value = todayIso();
+    setPayMode(me.online_pay ? "online" : "offline");
     payPick();
   }
+  function setPayMode(mode) {
+    payMode = mode;
+    $$(".payopt").forEach(function (b) { var on = b.dataset.pay === mode; b.classList.toggle("on", on); b.setAttribute("aria-checked", on ? "true" : "false"); });
+    $("#pay-online").hidden = mode !== "online"; $("#pay-form").hidden = mode !== "offline";
+  }
+  $$(".payopt").forEach(function (b) { b.addEventListener("click", function () { setPayMode(b.dataset.pay); }); });
   function payPick() {
     var inv = me.invoices.filter(function (i) { return String(i.id) === $("#pay-inv").value; })[0];
     if (!inv) return;
     $("#pay-info").innerHTML = "<div class=muted>Balance on invoice " + esc(inv.invoice_no) + " (" + esc(plural(inv.roofs, "roof")) + ", " + esc(inv.period) + ")</div>" +
       "<div class=amt>" + money(inv.balance) + "</div><div class=muted>Due " + esc(pretty(inv.due_date)) + " · " + esc(me.invoice_terms) + "</div>" +
-      (inv.payment_pending ? "<p style='margin-top:8px'>" + badge("Confirming payment") + " You told us about " + money(inv.payment_pending.amount) +
-        " (" + esc(inv.payment_pending.reference) + "). We'll update the balance once it arrives.</p>" : "");
+      (inv.payment_pending ? "<p style='margin-top:8px'>" + badge("Confirming payment") + " " +
+        (inv.payment_pending.online ? "Your bank payment of " + money(inv.payment_pending.amount) + " is clearing. It takes 3–5 business days."
+          : "You told us about " + money(inv.payment_pending.amount) + " (" + esc(inv.payment_pending.reference) + "). We'll update the balance once it arrives.") + "</p>" : "");
     $("#pay-amt").value = inv.balance.toFixed(2);
     $("#pay-form").querySelector("button[type=submit]").disabled = !!inv.payment_pending;
+    $("#pay-stripe").disabled = !!inv.payment_pending || !me.online_pay;
+    $("#pay-stripe").innerHTML = "Pay " + money(inv.balance) + " securely" + (me.online_test_mode ? "<span class=testmode>Test mode</span>" : "");
   }
   $("#pay-inv").addEventListener("change", payPick);
+  $("#pay-stripe").addEventListener("click", function () {
+    var btn = this; btn.disabled = true; show($("#pay-online-error"), "");
+    call("POST", "/payments/checkout", { import_id: +$("#pay-inv").value }).then(function (res) {
+      if (!res.j.ok || !/^https:\/\/checkout\.stripe\.com\//.test(res.j.url || "")) {
+        btn.disabled = false; show($("#pay-online-error"), res.j.error || "Couldn't start the checkout. Please try again."); return;
+      }
+      btn.textContent = "Opening secure checkout…";
+      location.href = res.j.url;
+    });
+  });
+  // Back from Stripe's checkout page: ask the console how it went.
+  var returningCheckout = null;
+  try { returningCheckout = new URLSearchParams(location.search).get("checkout"); } catch (e) {}
+  if (returningCheckout) history.replaceState(null, "", location.pathname + "#pay");
+  function finishCheckout(sid) {
+    $("#pay-flow").hidden = true; $("#pay-done").hidden = false;
+    $("#pay-done-title").textContent = "Checking your payment…"; $("#pay-done-text").textContent = ""; $("#pay-ref-out").textContent = ""; $("#pay-done-more").textContent = "";
+    call("POST", "/payments/checkout/status", { session_id: sid }).then(function (res) {
+      var j = res.j, what = j.ok ? money(j.amount) + (j.method ? " by " + j.method.replace(/ \(Stripe\)$/, "") : "") + (j.invoice_no ? " for invoice " + j.invoice_no : "") : "";
+      if (!j.ok) { $("#pay-done-title").textContent = "We couldn't check that payment"; $("#pay-done-text").textContent = j.error || ""; }
+      else if (j.status === "paid") {
+        $("#pay-done-title").textContent = "Payment received";
+        $("#pay-done-text").textContent = "Thank you. We received " + what + ".";
+        $("#pay-ref-out").textContent = "Paid";
+        $("#pay-done-more").textContent = "Your balance is updated. Paying an invoice in full starts coverage on its roofs.";
+      } else if (j.status === "processing") {
+        $("#pay-done-title").textContent = "Bank payment started";
+        $("#pay-done-text").textContent = "Your payment of " + what + " is on its way.";
+        $("#pay-ref-out").textContent = "Clearing";
+        $("#pay-done-more").textContent = "Bank (ACH) payments take 3–5 business days to clear. Your balance and coverage update on their own once it does.";
+      } else {
+        $("#pay-done-title").textContent = j.status === "failed" ? "The payment didn't go through" : "Payment not finished";
+        $("#pay-done-text").textContent = "Nothing was charged for " + (j.invoice_no ? "invoice " + j.invoice_no : "this invoice") + ". You can try again from Pay invoice.";
+      }
+      call("GET", "/me").then(function (r2) { if (r2.j.ok) me = r2.j; });
+    });
+  }
   $("#pay-form").addEventListener("submit", function (e) {
     e.preventDefault();
     var body = { import_id: +$("#pay-inv").value, amount: $("#pay-amt").value.trim(), method: $("#pay-method").value,
@@ -917,46 +1189,104 @@
       btn.disabled = false;
       if (!res.j.ok) { show($("#pay-error"), res.j.error); return; }
       var inv = me.invoices.filter(function (i) { return i.id === body.import_id; })[0];
+      $("#pay-done-title").textContent = "Thanks, we're on it";
       $("#pay-done-text").textContent = "You told us you sent " + money(String(body.amount).replace(/[$,]/g, "")) + " by " + body.method + " for invoice " + (inv ? inv.invoice_no : "") + ".";
       $("#pay-ref-out").textContent = res.j.reference;
+      $("#pay-done-more").textContent = "Your balance updates once we confirm the payment arrived. Paying an invoice in full starts coverage on its roofs.";
       $("#pay-flow").hidden = true; $("#pay-done").hidden = false;
       call("GET", "/me").then(function (r2) { if (r2.j.ok) me = r2.j; });
     });
   });
 
   // ===================== FILE A CLAIM =====================
-  var CLAIM_COLS = ["property_address", "city", "state", "zip", "claimant_name", "claimant_email", "claimant_phone", "issue_type", "date_noticed", "claim_date"];
-  var CLAIM_HEAD = ["Property Address", "City", "State", "ZIP", "Claimant Name", "Claimant Email", "Claimant Phone", "Issue Type", "Date Noticed", "Claim Date"];
+  var CLAIM_COLS = ["property_address", "city", "state", "zip", "claimant_name", "claimant_email", "claimant_phone", "issue_type", "date_noticed", "claim_date", "repair_cost", "repair_materials"];
+  var CLAIM_HEAD = ["Property Address", "City", "State", "ZIP", "Claimant Name", "Claimant Email", "Claimant Phone", "Issue Type", "Date Noticed", "Claim Date", "Repair Cost", "Materials Used"];
   var claims = [], claimSeq = 0, claimChecking = false, claimFile = null;
 
-  function fillPolicySelect() {
-    $("#c-policy").innerHTML = "<option value=''>" + (me.roofs.length ? "Choose a registered roof" : "No registered roofs yet") + "</option>" + me.roofs.map(function (p) {
-      return "<option value='" + esc(p.policy_number) + "'>" + esc(p.property_address + (p.city ? ", " + p.city : "") + " · " + (p.homeowner_name || "") + " · " + p.policy_number) + "</option>";
-    }).join("");
+  // Which roof: type part of the address, homeowner or policy # and pick from the matches.
+  var roofHits = [], roofHit = -1;
+  function resetRoofPicker() {
+    $("#c-policy").value = ""; $("#c-roof-q").value = "";
+    $("#c-roof-combo").hidden = false; $("#c-roof-picked").hidden = true; closeRoofList();
+    $("#c-roof-q").placeholder = me.roofs.length ? "Start typing the address, homeowner or policy #" : "No registered roofs yet";
+    var cd = $("#c-single").elements.claim_date; if (!cd.value) cd.value = todayIso();
   }
-  $("#c-policy").addEventListener("change", function () {
-    var v = this.value, p = me.roofs.filter(function (x) { return x.policy_number === v; })[0];
-    var name = $("#c-single").elements.claimant_name;
-    if (p && !name.value) name.value = p.homeowner_name || "";
+  function closeRoofList() { $("#c-roof-list").hidden = true; $("#c-roof-q").setAttribute("aria-expanded", "false"); }
+  function findRoofs(q) {
+    var words = q.toLowerCase().split(/\s+/).filter(Boolean);
+    if (!words.length) return [];
+    return me.roofs.filter(function (p) {
+      var hay = [p.property_address, p.city, p.state, p.zip, p.homeowner_name, p.policy_number].join(" ").toLowerCase();
+      return words.every(function (w) { return hay.indexOf(w) >= 0; });
+    }).slice(0, 8);
+  }
+  function renderRoofList() {
+    var q = $("#c-roof-q").value.trim();
+    roofHits = findRoofs(q); roofHit = roofHits.length ? 0 : -1;
+    var list = $("#c-roof-list");
+    if (!q) { closeRoofList(); return; }
+    list.innerHTML = roofHits.map(function (p, i) {
+      return "<div class='combo-item" + (i === roofHit ? " on" : "") + "' role=option data-i='" + i + "'><b>" + esc(p.property_address) + "</b>" +
+        (p.city || p.state ? ", " + esc([p.city, p.state].filter(Boolean).join(", ")) + " " + esc(p.zip || "") : "") +
+        "<div class=muted>" + esc(p.homeowner_name || "") + " · Policy " + esc(p.policy_number) + " · Installed " + esc(pretty(p.installation_date)) + "</div></div>";
+    }).join("") || "<div class=combo-empty>No registered roof matches &ldquo;" + esc(q) + "&rdquo;.</div>";
+    list.hidden = false; $("#c-roof-q").setAttribute("aria-expanded", "true");
+  }
+  function pickRoof(p) {
+    var f = $("#c-single");
+    $("#c-policy").value = p.policy_number;
+    $("#c-roof-combo").hidden = true; closeRoofList();
+    $("#c-roof-picked").innerHTML = "<div><b>" + esc(p.property_address) + "</b>" + esc([p.city, p.state].filter(Boolean).length ? ", " + [p.city, p.state].filter(Boolean).join(", ") + " " + (p.zip || "") : "") +
+      "<div class=muted>" + esc(p.homeowner_name || "") + " · Policy " + esc(p.policy_number) + " · Installed " + esc(pretty(p.installation_date)) + " · " + esc(p.status) + "</div></div>" +
+      "<button class=linkbtn type=button id=c-roof-change>Change</button>";
+    $("#c-roof-picked").hidden = false;
+    if (!f.elements.claimant_name.value) f.elements.claimant_name.value = p.homeowner_name || "";
+    if (!f.elements.claimant_email.value) f.elements.claimant_email.value = p.homeowner_email || "";
+    if (!f.elements.claimant_phone.value) f.elements.claimant_phone.value = p.homeowner_phone || "";
+  }
+  $("#c-roof-q").addEventListener("input", renderRoofList);
+  $("#c-roof-q").addEventListener("focus", function () { if (this.value.trim()) renderRoofList(); });
+  $("#c-roof-q").addEventListener("keydown", function (e) {
+    if ($("#c-roof-list").hidden || !roofHits.length) return;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault(); roofHit = (roofHit + (e.key === "ArrowDown" ? 1 : roofHits.length - 1)) % roofHits.length;
+      $$("#c-roof-list .combo-item").forEach(function (el, i) { el.classList.toggle("on", i === roofHit); if (i === roofHit) el.scrollIntoView({ block: "nearest" }); });
+    } else if (e.key === "Enter") { e.preventDefault(); pickRoof(roofHits[roofHit]); }
+    else if (e.key === "Escape") closeRoofList();
   });
+  $("#c-roof-list").addEventListener("mousedown", function (e) {
+    var it = e.target.closest(".combo-item"); if (!it) return;
+    e.preventDefault(); pickRoof(roofHits[+it.dataset.i]);
+  });
+  $("#c-roof-q").addEventListener("blur", function () { setTimeout(closeRoofList, 150); });
+  $("#c-roof-picked").addEventListener("click", function (e) {
+    if (e.target.id !== "c-roof-change") return;
+    $("#c-policy").value = ""; $("#c-roof-picked").hidden = true; $("#c-roof-combo").hidden = false; $("#c-roof-q").focus(); renderRoofList();
+  });
+  var CLAIM_FORM = [["claimant_name", "claimant name"], ["claimant_email", "claimant email"], ["claimant_phone", "claimant phone"],
+                    ["issue_type", "issue type"], ["claim_date", "claim date"], ["date_noticed", "date first noticed"],
+                    ["severe_weather", "recent severe weather"], ["description", "short explanation of the issue"],
+                    ["repair_cost", "roofer cost to repair"], ["repair_materials", "materials used for repair"]];
   $("#c-single").addEventListener("submit", function (e) {
     e.preventDefault();
     var f = e.target, miss = [];
     if (!f.elements.policy.value) miss.push("which roof");
-    if (!f.elements.claimant_name.value.trim()) miss.push("claimant name");
-    if (!f.elements.issue_type.value) miss.push("issue type");
-    if (!f.elements.description.value.trim()) miss.push("what's happening");
+    CLAIM_FORM.forEach(function (x) { if (!String(f.elements[x[0]].value).trim()) miss.push(x[1]); });
     if (miss.length) { show($("#c-error"), "Please fill in: " + miss.join(", ") + "."); return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.elements.claimant_email.value.trim())) { show($("#c-error"), "The claimant email doesn't look right."); return; }
+    var cost = f.elements.repair_cost.value.replace(/[$,\s]/g, "");
+    if (!/^\d+(\.\d{1,2})?$/.test(cost)) { show($("#c-error"), "Enter the roofer cost to repair as a dollar amount, e.g. 850.00."); f.elements.repair_cost.focus(); return; }
     show($("#c-error"), "");
     var claim = { policy_number: f.elements.policy.value };
-    ["claimant_name", "claimant_email", "claimant_phone", "issue_type", "date_noticed", "severe_weather", "description"].forEach(function (k) { claim[k] = f.elements[k].value.trim(); });
+    CLAIM_FORM.forEach(function (x) { claim[x[0]] = String(f.elements[x[0]].value).trim(); });
+    claim.repair_cost = cost;
     var btn = f.querySelector("button[type=submit]"); btn.disabled = true;
     call("POST", "/claims", { claim: claim }).then(function (res) {
       btn.disabled = false;
       if (!res.j.ok) { show($("#c-error"), res.j.error); return; }
       var p = me.roofs.filter(function (x) { return x.policy_number === claim.policy_number; })[0];
       showClaimDone(res.j.reference, res.j.claims[0].reference + " for " + (p ? p.property_address : "") + " (policy " + claim.policy_number + ") received.");
-      f.reset();
+      f.reset(); resetRoofPicker();
     });
   });
 
@@ -1007,7 +1337,7 @@
     checkClaims();
     return { rows: s.rows.length, company: s.company };
   }
-  wireDrop("#claim-drop", "#claim-file", loadClaimWorkbook);
+  wireDrop("#claim-drop", "#claim-file", loadClaimWorkbook, false);
   $("#claim-template").addEventListener("click", function () {
     template("Claim Submissions", CLAIM_HEAD, "ServiceGuard_Claims_" + me.company.name.replace(/\W+/g, "_") + ".xlsx", false);
   });
