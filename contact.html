@@ -172,6 +172,7 @@
   }
   .form-submit:hover { background: var(--accent-dark); }
   .form-submit:disabled { opacity: 0.6; cursor: wait; }
+  .turnstile-box:not(:empty) { margin-bottom: 16px; }
   .form-note { font-size: 0.85rem; color: var(--gray-500); margin-top: 14px; line-height: 1.6; }
   .form-success { display: none; text-align: center; padding: 40px 10px; }
   .form-success.show, .form-success.visible { display: block; }
@@ -374,6 +375,11 @@
         </div>
       </div>
 
+      <!-- Hidden from people; bots fill it in (honeypot). -->
+      <input type="text" id="company_url" name="company_url" tabindex="-1" autocomplete="off" aria-hidden="true"
+             style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <!-- Cloudflare Turnstile bot check (shown only once TURNSTILE_SITE_KEY is set below). -->
+      <div id="turnstileBox" class="turnstile-box"></div>
       <button class="form-submit" id="submitBtn" onclick="submitForm()">See the Economics</button>
       <p class="form-note" id="formError" style="display:none;color:var(--red);"></p>
       <p class="form-note">By submitting, you agree to be contacted by Service Guard. We'll never share your information with third parties.</p>
@@ -400,9 +406,36 @@
 </footer>
 
 <script>
-  const HS_PORTAL_ID = '246469729';
-  const HS_FORM_ID = 'd3c4425b-7409-48cf-88db-d4d6a6d5f69f';
-  const HS_ENDPOINT = 'https://api.hsforms.com/submissions/v3/integration/submit/' + HS_PORTAL_ID + '/' + HS_FORM_ID;
+  // The form posts to the Service Guard Operations Console, which runs the bot
+  // check and then sends the lead to the HubSpot "Roofers - Become a Partner"
+  // form (the HubSpot form id lives on the console, not in this page).
+  const INTEREST_ENDPOINT = 'https://sg-roof-importer.onrender.com/api/interest';
+
+  // Cloudflare Turnstile bot check. The site key is public (it is meant to be in
+  // the page); the matching secret key lives only on Render (TURNSTILE_SECRET_KEY).
+  // Empty = no check. Set this and push BEFORE adding the secret on Render.
+  const TURNSTILE_SITE_KEY = "";
+  let turnstileToken = '';
+  let turnstileWidget = null;
+  window.onTurnstileLoad = function () {
+    turnstileWidget = turnstile.render('#turnstileBox', {
+      sitekey: TURNSTILE_SITE_KEY,
+      size: 'flexible',
+      callback: function (t) { turnstileToken = t; document.getElementById('formError').style.display = 'none'; },
+      'expired-callback': function () { turnstileToken = ''; },
+      'error-callback': function () { turnstileToken = ''; }
+    });
+  };
+  if (TURNSTILE_SITE_KEY) {
+    const ts = document.createElement('script');
+    ts.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad';
+    ts.async = true; ts.defer = true;
+    document.head.appendChild(ts);
+  }
+  function resetTurnstile() {   // each token works once, so get a fresh one after a failed send
+    turnstileToken = '';
+    if (turnstileWidget !== null && window.turnstile) turnstile.reset(turnstileWidget);
+  }
 
   // Maps each input to its HubSpot contact property. Names must match the
   // published "Roofers - Become a Partner" form exactly — HubSpot rejects the
@@ -450,40 +483,53 @@
       return;
     }
 
-    const fields = Object.entries(HS_FIELDS)
-      .map(([id, name]) => ({ name, value: document.getElementById(id).value.trim() }))
-      .filter(f => f.value !== '');
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      errorEl.textContent = 'Please complete the verification check above the button, then try again.';
+      errorEl.style.display = 'block';
+      return;
+    }
 
-    // Tags every inbound lead as a contractor so they never mix with claimants.
-    fields.push({ name: 'hs_role', value: 'Contractor' });
+    // The console tags every lead as a contractor (hs_role) so they never mix with claimants.
+    const fields = {};
+    Object.entries(HS_FIELDS).forEach(([id, name]) => {
+      const v = document.getElementById(id).value.trim();
+      if (v !== '') fields[name] = v;
+    });
 
     errorEl.style.display = 'none';
     btn.disabled = true;
     btn.textContent = 'Sending…';
 
     try {
-      const res = await fetch(HS_ENDPOINT, {
+      // 60s timeout so a slow server can't leave the button stuck.
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 60000);
+      const res = await fetch(INTEREST_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
         body: JSON.stringify({
           fields,
-          context: {
-            // Lets HubSpot tie this to the visitor's tracked session for
-            // conversion attribution and dedupe against existing contacts.
-            hutk: getCookie('hubspotutk'),
-            pageUri: window.location.href,
-            pageName: document.title,
-          },
+          // Lets HubSpot tie this to the visitor's tracked session for
+          // conversion attribution and dedupe against existing contacts.
+          hutk: getCookie('hubspotutk'),
+          pageUri: window.location.href,
+          pageName: document.title,
+          company_url: document.getElementById('company_url').value,  // honeypot
+          'cf-turnstile-response': turnstileToken,
         }),
       });
-
-      if (!res.ok) throw new Error('HubSpot returned ' + res.status + ': ' + await res.text());
+      clearTimeout(timeout);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || ('server returned ' + res.status));
 
       document.getElementById('formContent').style.display = 'none';
       document.getElementById('formSuccess').classList.add('show');
     } catch (err) {
-      console.error('HubSpot submission failed:', err);
-      errorEl.textContent = 'Something went wrong sending your request. Please try again, or email us at info@serviceguardwarranty.com.';
+      console.error('Partner form submission failed:', err);
+      resetTurnstile();
+      errorEl.textContent = 'Something went wrong sending your request (' + ((err && err.message) || 'network error') +
+        '). Please try again, or email us at info@serviceguardwarranty.com.';
       errorEl.style.display = 'block';
       btn.disabled = false;
       btn.textContent = 'See the Economics';
