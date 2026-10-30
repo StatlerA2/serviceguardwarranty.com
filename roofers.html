@@ -120,6 +120,10 @@
   }
   .nav-links a:hover::after { width: 100%; }
   .nav-cta { display: flex; gap: 8px; align-items: center; }
+  /* bar buttons match the landing page: outlined, then the bright blue Contractor Portal on the right */
+  .btn-navline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.35); }
+  .btn-navline:hover { border-color: var(--accent-light); background: rgba(255,255,255,0.06); }
+  .btn-portal svg { width: 15px; height: 15px; }
   .hamburger { display: none; background: none; border: none; cursor: pointer; }
   .hamburger svg { stroke: var(--white); }
   .nav-mobile-only { display: none; }
@@ -390,7 +394,8 @@
   @media (max-width: 768px) {
     .nav-inner { padding: 0 20px; }
     .nav-links { display: none; }
-    .nav-cta .btn-ghost { display: none; }
+    .nav-cta .btn-ghost, .nav-cta .btn-navline { display: none; }
+    .nav-cta .btn-portal { min-height: 40px; padding: 0 14px; font-size: 0.72rem; }
     .hamburger { display: block; }
     /* mobile menu: hamburger opens the nav links as a dropdown under the bar */
     .nav.menu-open .nav-links {
@@ -416,6 +421,26 @@
     .hero h1 { font-size: clamp(2rem, 9.5vw, 3rem) !important; }
     .section-header h2, .cta h2 { font-size: clamp(1.9rem, 9vw, 2.5rem) !important; }
   }
+  /* Contractor Portal button: brushed-metal Service Guard blue, with a sheen on hover,
+     so it stands apart from the flat blue buttons (File a Claim, Get In Touch). */
+  .nav a.portal-btn {
+    position: relative; overflow: hidden; isolation: isolate;
+    background: linear-gradient(180deg, #6FA8DC 0%, #3B7FC4 22%, #2B6CB0 48%, #1F5592 52%, #2B6CB0 78%, #4F8FCF 100%);
+    border: 1px solid #1A4A80;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(0,0,0,0.25), 0 2px 8px rgba(43,108,176,0.35);
+    color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+  }
+  .nav a.portal-btn::before {   /* the sheen */
+    content: ''; position: absolute; top: 0; bottom: 0; left: -60%; width: 45%; z-index: -1;
+    background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+    transform: skewX(-20deg); transition: left 0.6s ease;
+  }
+  .nav a.portal-btn:hover {
+    background: linear-gradient(180deg, #7DB3E3 0%, #4689CC 22%, #3374B8 48%, #24609F 52%, #3374B8 78%, #5A99D6 100%);
+    border-color: #1F5592;
+  }
+  .nav a.portal-btn:hover::before { left: 120%; }
+  @media (prefers-reduced-motion: reduce) { .nav a.portal-btn::before { transition: none; } }
 </style>
 </head>
 <body>
@@ -431,12 +456,16 @@
       <li><a href="#how">How It Works</a></li>
       <li><a href="#why">Why Service Guard</a></li>
       <li><a href="/vision">Our Vision</a></li>
-      <li><a href="/portal">Contractor Portal</a></li>
+      <li class="nav-mobile-only"><a href="/contact">Get In Touch</a></li>
       <li class="nav-mobile-only"><a href="/">For Homeowners</a></li>
     </ul>
     <div class="nav-cta">
       <a href="/" class="btn btn-ghost" style="margin-right:8px;">For Homeowners</a>
-      <a href="/contact" class="btn btn-primary">Get In Touch</a>
+      <a href="/contact" class="btn btn-navline">Get In Touch</a>
+      <a href="/portal" class="btn btn-primary btn-portal portal-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Contractor Portal
+      </a>
     </div>
     <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round">
