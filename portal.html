@@ -1020,8 +1020,9 @@
     $("#roof-map").hidden = false;
     $("#map-how").innerHTML = j.how === "claude" ? "<span class='badge b-info'>Matched with Claude</span>"
       : j.how === "yours" ? "<span class='badge b-ok'>Your choices</span>" : "<span class='badge b-ok'>Matched automatically</span>";
-    $("#map-intro").innerHTML = "We read <b>" + esc(conv.name) + "</b>: column names on row " + (j.header_row + 1) + ", " + plural(j.rows.length, "roof") +
-      ". Check that each Service Guard field points at the right column in your file, then review the roofs below.";
+    $("#map-intro").innerHTML = "We read <b>" + esc(conv.name) + "</b>: " +
+      (j.header_row < 0 ? "it has no column names, so we matched each column by what's in it" : "column names on row " + (j.header_row + 1)) +
+      ", " + plural(j.rows.length, "roof") + ". Check that each Service Guard field points at the right column in your file, then review the roofs below.";
     var labels = {}; j.fields.forEach(function (f) { labels[f.key] = f.label; });
     $("#map-missing").hidden = !j.missing.length;
     $("#map-missing").innerHTML = j.missing.length ? "We couldn't find <b>" + esc(j.missing.map(function (k) { return labels[k]; }).join(", ")) +
