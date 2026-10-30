@@ -244,6 +244,8 @@
   .checkbox-group input[type="checkbox"] { accent-color: var(--accent); width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; }
   .checkbox-group label { font-size: 0.95rem; color: rgba(255,255,255,0.75); line-height: 1.6; }
   .form-submit { margin-top: 26px; }
+  .turnstile-box:not(:empty) { margin-top: 22px; }
+  .turnstile-box:not(:empty) + .form-submit { margin-top: 16px; }
   .form-note { color: rgba(255,255,255,0.5); }
   .form-success h3 { color: var(--white); }
   .form-success p { color: rgba(255,255,255,0.75); }
@@ -424,6 +426,8 @@
       <!-- submitClaim() POSTs the claim to the Service Guard Operations Console
            (CLAIMS_ENDPOINT), which records it in the database and matches it to a
            policy by property address. Set CLAIMS_ENDPOINT to the ops console URL. -->
+      <!-- Cloudflare Turnstile bot check (shown only once TURNSTILE_SITE_KEY is set below). -->
+      <div id="turnstileBox" class="turnstile-box"></div>
       <button class="form-submit" onclick="submitClaim()">Submit Claim</button>
       <p class="form-note">Your information is kept confidential and used only to process your claim.</p>
     </div>
@@ -458,6 +462,33 @@
 <script>
   // Set this to the Service Guard Operations Console URL once it is deployed.
   const CLAIMS_ENDPOINT = "https://sg-roof-importer.onrender.com/api/claims";
+
+  // Cloudflare Turnstile bot check. The site key is public (it is meant to be in
+  // the page); the matching secret key lives only on Render (TURNSTILE_SECRET_KEY).
+  // Empty = no check. Set this and push BEFORE adding the secret on Render.
+  const TURNSTILE_SITE_KEY = "";
+  let turnstileToken = '';
+  let turnstileWidget = null;
+  window.onTurnstileLoad = function () {
+    turnstileWidget = turnstile.render('#turnstileBox', {
+      sitekey: TURNSTILE_SITE_KEY,
+      theme: 'dark',
+      size: 'flexible',
+      callback: function (t) { turnstileToken = t; hideFormError(); },
+      'expired-callback': function () { turnstileToken = ''; },
+      'error-callback': function () { turnstileToken = ''; }
+    });
+  };
+  if (TURNSTILE_SITE_KEY) {
+    const ts = document.createElement('script');
+    ts.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad';
+    ts.async = true; ts.defer = true;
+    document.head.appendChild(ts);
+  }
+  function resetTurnstile() {   // each token works once, so get a fresh one after a failed submit
+    turnstileToken = '';
+    if (turnstileWidget !== null && window.turnstile) turnstile.reset(turnstileWidget);
+  }
 
   function toggleWeather(show) {
     document.getElementById('weatherDetail').classList.toggle('visible', show);
@@ -503,6 +534,10 @@
       showFormError('Please complete the following before submitting: ' + missing.join(', ') + '.');
       return;
     }
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      showFormError('Please complete the verification check above the Submit button, then submit again.');
+      return;
+    }
     hideFormError();
 
     // 2) Build payload and submit.
@@ -520,7 +555,8 @@
       severe_weather: weather ? weather.value : '',
       weather_desc: val('weatherDesc'),
       description: val('issueDesc'),
-      company_website: document.getElementById('company_website').value  // honeypot
+      company_website: document.getElementById('company_website').value,  // honeypot
+      'cf-turnstile-response': turnstileToken
     };
 
     const btn = document.querySelector('.form-submit');
@@ -544,6 +580,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
       clearTimeout(timeout);
+      resetTurnstile();
       btn.disabled = false; btn.textContent = 'Submit Claim';
       const reason = (err && err.name === 'AbortError')
         ? 'the server took too long to respond. It may be waking up, so please wait a few seconds and try again'
